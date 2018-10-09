@@ -8,7 +8,7 @@ Here is a quick start guide:
 ```
 git clone https://github.com/jigartatva/newsapp2.git
 cd News-reactnative
-yarn install
+npm install
 For ios 
 react-native run-ios
 For Android 
