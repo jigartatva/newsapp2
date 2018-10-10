@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    height: 100,
+    height: 200,
     width: '90%',
     marginTop: 10,
     marginLeft: 20,
@@ -28,11 +28,31 @@ const styles = StyleSheet.create({
     width: 50
   },
   listItemTitleText: {
-    color: Colors._000000,
+    color: 'white',
     fontSize: 16,
     padding: 5,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textShadowColor: 'rgba(0, 0, 0, 0.90)',
+    textShadowOffset: {width: -2, height: 2},
+    textShadowRadius: 20
   },
+  source: {
+    backgroundColor : '#ff0040',
+    borderRadius: 5,
+    padding : 5
+  },
+  shadowView:{
+    shadowColor: 'rgba(0, 0, 0, 0.75)',
+    shadowOffset : {width: -1, height: 1},
+    shadowRadius : 20,
+    shadowOpacity : 1
+  },
+  TouchableOpacityStyle: {
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'steelblue',
+    height: 40,
+  }
 });
 
 /* export the styling */

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator } from 'react-native';
+import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator,TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -13,6 +13,7 @@ import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import Image from 'react-native-image-progress';
 import ProgressCircle from 'react-native-progress/Circle';
 import Search from 'react-native-search-box';
+import GridView from 'react-native-super-grid';
 
 /* API */
 import * as NewsAuthAPI from '../../../services/newsAuthAPI';
@@ -127,34 +128,43 @@ class HomeView extends Component {
           <ActivityIndicator size="large" color="#0000ff" animating={this.props.loading} />
         </View>
 
-        <View style={{ justifyContent: 'flex-start', width: '100%', height: '15%' }}>
-          <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
+        <View style={{ justifyContent: 'flex-start',flexDirection : 'row', width: '100%', height: '15%' }}>
+          
+            <View style={{flex:7}}>
+              <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
+            </View>
+            <View style={{flex:1}}>
+              <TouchableOpacity activeOpacity={.4} style={styles.TouchableOpacityStyle} onPress={()=>this.props.navigation.navigate('Filter')} >
+                <Text style={{ fontSize: 10, textAlign: 'center', paddingTop:10, color: 'black' }}> filter</Text>   
+              </TouchableOpacity>
+            </View>
         </View>
 
         <View style={{ backgroundColor: 'greeen', justifyContent: 'flex-start', width: '100%', height: '80%' }}>
-          <ListView
-            renderScrollComponent={props => <InfiniteScrollView {...props} />}
-            distanceToLoadMore={5}
-            dataSource={this.state.dataSource}
-            renderRow={(rowData, rowID) => (
-              <View key={Math.random() + rowID} style={styles.articleListView}>
-                <View style={{ width: '25%', alignItems: 'center', justifyContent: 'center' }}>
-                  <Image
-                    source={{ uri: rowData.urlToImage }}
-                    indicator={ProgressCircle}
-                    style={styles.articleListImage} />
+        <GridView
+          itemDimension={150}
+          spacing={1}
+          onEndReached = {this.renderLoadMoreItems}   
+          refreshControl={this._renderRefreshControl()}         
+          items={this.state.allNews}
+          renderItem={item => (
+            
+                <View key={Math.random()} style={styles.articleListView}>
+                  <Image source={{ uri: item.urlToImage}} style={{height:'100%' , width: '100%'}}>
+                    <View style={{ width: '75%', alignItems: 'flex-start',alignContent:'flex-end', justifyContent: 'flex-end' ,position:'absolute',bottom:5 }}>
+                      <View style={styles.source}>
+                        <Text>{item.source.name  ? item.source.name : 'not available'}</Text>
+                      </View>
+                      <View style={styles.shadowView}>
+                        <Text style={styles.listItemTitleText} numberOfLines={3} ellipsizeMode ={'tail'}>{item.title}</Text>
+                      </View>
+                      <Text style={{color:'white',textShadowColor: 'rgba(0, 0, 0, 0.90)',textShadowOffset: {width: -2, height: 2},textShadowRadius: 20}}>publish on: {item.publishedAt}</Text>                                                                                                                                                                                                                                                                                                                 
+                    </View>
+                  </Image>
                 </View>
-                <View style={{ width: '75%', alignItems: 'flex-start', justifyContent: 'center' }}>
-                  <Text style={styles.listItemTitleText}>{rowData.title}</Text>
-                </View>
-              </View>
-            )}
-            refreshControl={this._renderRefreshControl()}
-            canLoadMore={!!this.props.newsArticles}
-            onLoadMoreAsync={this._loadMoreContentAsync.bind(this)}
-            onEndReachedThreshold={0.2}
-            onEndReached={this.renderLoadMoreItems}
-          />
+              
+          )}
+        />
         </View>
       </SafeAreaView>
     );
