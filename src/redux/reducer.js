@@ -2,7 +2,7 @@ import { Map, fromJS } from 'immutable';
 import { loop, combineReducers } from 'redux-loop-symbol-ponyfill';
 import SessionStateReducer, { RESET_STATE } from '../modules/session/SessionState';
 // ## Generator Reducer Imports
-import appReducer from '../services/AppService';
+import appReducer from '../services/services';
 import newsReducer from '../services/newsAuthAPI';
 import NewsAuthStateReducer from '../services/newsAuthAPI';
 

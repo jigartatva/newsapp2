@@ -4,7 +4,7 @@ const env = process.env.NODE_ENV || 'development';
 const apiEnvironment = {
   development: {
     api: 'https://newsapi.org/v2',
-    key: '0d868cdbccbe40d29f4a1e6a94f5c155',
+    key: '44f4172e2ef64d2d8f15f3db96061a83',
   }
 };
 

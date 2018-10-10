@@ -17,6 +17,10 @@ function* getNewsListBySearchWatcher() {
   yield takeLatest(NewsActions.GET_NEWSLIST_SEARCH, getNewsListBySearchHandler);
 }
 
+function* getNewsListBySourcesWatcher() {
+  yield takeLatest(NewsActions.GET_NEWSLIST_SOURCES, getNewsListBySourcesHandler);
+}
+
 function* getNewsSourcesWatcher() {
   yield takeEvery(NewsActions.GET_NEWS_SOURCES, getNewsSourcesHandler);
 }
@@ -62,9 +66,11 @@ function* getNewsListBySearchHandler(value) {
 function* getNewsSourcesHandler() {
   yield put(AppActions.setLoader(true));
   try {
-    const requestUrl = `${API_ROOT}/sources?apiKey=${API_KEY}`;
+    const requestUrl = `${API_ROOT}/sources&apiKey=${API_KEY}`;
+    // const requestUrl =`${API_ROOT}/sources?apiKey=${API_KEY}`;
     let result = yield fetch(requestUrl)
       .then(response => response.json());
+      console.log("results==>",result);
     if (result.status === "ok") {
       yield put(NewsActions.getNewsSourcesSuccess(result.sources));
     } else {
@@ -77,8 +83,27 @@ function* getNewsSourcesHandler() {
   yield put(AppActions.setLoader(false));
 }
 
+function* getNewsListBySourcesHandler(value) {
+  yield put(AppActions.setLoader(true));
+  try {
+    const requestUrl = `${API_ROOT}/everything?sources=${value.payload.sourceby}&apiKey=${API_KEY}`;
+    let result = yield fetch(requestUrl)
+      .then(response => response.json());
+    console.log('result', result);
+    if (result.status === "ok") {
+      yield put(NewsActions.getNewsListSuccess(result));
+    } else {
+      Alert.alert(result.code, result.message);
+      yield put(NewsActions.getNewsListFail(""));
+    }
+
+  } catch (error) {
+    yield put(NewsActions.getNewsListFail(""));
+  }
+  yield put(AppActions.setLoader(false));
+}
 export default [
   getNewsListWatcher,
   getNewsListBySearchWatcher,
-  getNewsSourcesWatcher
+  getNewsSourcesWatcher,getNewsListBySourcesWatcher
 ];

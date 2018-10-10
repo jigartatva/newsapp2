@@ -83,7 +83,7 @@ class HomeView extends Component {
   }
 
   _renderRefreshControl() {
-    this.setState({ currentPageIndex: 1 });
+ 
     return (
       <RefreshControl
         refreshing={this.state.isLoadMore}

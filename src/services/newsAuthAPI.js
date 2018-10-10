@@ -4,6 +4,7 @@ import { Map } from 'immutable';
 export const GET_NEWSLIST = 'GET_NEWSLIST';
 export const GET_NEWSLIST_SEARCH = 'GET_NEWSLIST_SEARCH';
 export const GET_NEWS_SOURCES = 'GET_NEWS_SOURCES';
+export const GET_NEWSLIST_SOURCES = 'GET_NEWSLIST_SOURCES';
 
 const GET_NEWSLIST_SUCCESS = 'GET_NEWSLIST_SUCCESS';
 const GET_NEWSLIST_FAILURE = 'GET_NEWSLIST_FAILURE';
@@ -16,9 +17,14 @@ export const getNewsList = (page, pagesize) => ({
   payload: { page: page, pagesize: pagesize }
 });
 
-export const getNewsSources = (value) => ({
+export const getNewsSources = () => ({
   type: GET_NEWS_SOURCES,
-  payload: JSON.stringify(value)
+ 
+});
+
+export const getNewsListBySources = (sourceby) => ({
+  type: GET_NEWSLIST_SOURCES,
+  payload: { sourceby: sourceby }
 });
 
 export const getNewsListSuccess = (value) => ({
@@ -54,11 +60,15 @@ const initialState = Map({
 
 /* Reducer */
 export default function newsReducer(state = initialState, action) {
+ 
   switch (action.type) {
     case GET_NEWSLIST:
       return state;
 
     case GET_NEWS_SOURCES:
+      return state;
+
+      case GET_NEWSLIST_SOURCES:
       return state;
 
     case GET_NEWSLIST_SUCCESS:
@@ -71,7 +81,7 @@ export default function newsReducer(state = initialState, action) {
       return state;
 
     case GET_NEWS_SOURCES_SUCCESS:
-      return state.set('newsSources', action.payload);
+      return state.set('newsSources',action.payload);
 
     case GET_NEWS_SOURCES_FAILURE:
       return state;
