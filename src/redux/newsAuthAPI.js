@@ -22,9 +22,9 @@ export const getNewsSources = () => ({
  
 });
 
-export const getNewsListBySources = (sourceby) => ({
+export const getNewsListBySources = (sourceby,page, pagesize) => ({
   type: GET_NEWSLIST_SOURCES,
-  payload: { sourceby: sourceby }
+  payload: { sourceby: sourceby,page: page, pagesize: pagesize }
 });
 
 export const getNewsListSuccess = (value) => ({
