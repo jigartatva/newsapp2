@@ -14,6 +14,7 @@ import Image from 'react-native-image-progress';
 import ProgressCircle from 'react-native-progress/Circle';
 import Search from 'react-native-search-box';
 import GridView from 'react-native-super-grid';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 /* API */
 import * as NewsAuthAPI from '../../../services/newsAuthAPI';
@@ -40,13 +41,20 @@ class HomeView extends Component {
       currentPageIndex: 1,
       allNews: [],
       searchQuery: '',
+      isFilter:false,
     };
     this.renderLoadMoreItems = this.renderLoadMoreItems.bind(this);
   }
 
   componentWillMount() {
-    this.setState({ allNews: [], searchQuery: '' });
-    this._loadMoreContentAsync();
+    if(this.state.isFilter){
+      var sourceBy = this.props.navigation.getParam('sourceBy');
+      console.log("sourceBy====>",sourceBy);
+      this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy));
+    }
+      this.setState({ allNews: [], searchQuery: '' });
+      this._loadMoreContentAsync();
+    
   }
 
   componentDidMount() {
@@ -130,13 +138,11 @@ class HomeView extends Component {
 
         <View style={{ justifyContent: 'flex-start',flexDirection : 'row', width: '100%', height: '15%' }}>
           
-            <View style={{flex:7}}>
+            <View style={{flex:10}}>
               <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
             </View>
-            <View style={{flex:1}}>
-              <TouchableOpacity activeOpacity={.4} style={styles.TouchableOpacityStyle} onPress={()=>this.props.navigation.navigate('Filter')} >
-                <Text style={{ fontSize: 10, textAlign: 'center', paddingTop:10, color: 'black' }}> filter</Text>   
-              </TouchableOpacity>
+            <View style={{flex:1  }}>
+              <Icon name={"filter"} size={35}/>
             </View>
         </View>
 
@@ -144,7 +150,7 @@ class HomeView extends Component {
         <GridView
           itemDimension={150}
           spacing={1}
-          onEndReached = {this.renderLoadMoreItems}   
+          onEndReached = {this.renderLoadMoreItems}
           refreshControl={this._renderRefreshControl()}         
           items={this.state.allNews}
           renderItem={item => (
@@ -153,7 +159,7 @@ class HomeView extends Component {
                   <Image source={{ uri: item.urlToImage}} style={{height:'100%' , width: '100%'}}>
                     <View style={{ width: '75%', alignItems: 'flex-start',alignContent:'flex-end', justifyContent: 'flex-end' ,position:'absolute',bottom:5 }}>
                       <View style={styles.source}>
-                        <Text>{item.source.name  ? item.source.name : 'not available'}</Text>
+                        <Text>{item.hasOwnProperty('source')  ? item.source.name : 'not available'}</Text>
                       </View>
                       <View style={styles.shadowView}>
                         <Text style={styles.listItemTitleText} numberOfLines={3} ellipsizeMode ={'tail'}>{item.title}</Text>
