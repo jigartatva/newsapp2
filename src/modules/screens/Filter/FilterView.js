@@ -33,6 +33,7 @@ class FilterView extends Component {
 
   componentDidMount() {
    
+  this.setState({selectedItems : []});
    
    let sources =this.props.newsSources;
     if(CommonFunctions.isJson(this.props.newsSources)){
@@ -91,9 +92,9 @@ class FilterView extends Component {
     return (
       <View style={styles.container}>
         <SelectMultiple
-        items={this.state.items}
-        selectedItems={this.state.selectedItems}
-        onSelectionsChange={this.onSelectedItemsChange} />
+          items={this.state.items}
+          selectedItems={this.state.selectedItems}
+          onSelectionsChange={this.onSelectedItemsChange} />
         <TouchableOpacity activeOpacity={.4} style={styles.TouchableOpacityStyle} onPress={this._onapplyFilter} >
            <Text style={{ fontSize: 20, textAlign: 'center', paddingTop:10, color: 'black' }}> apply</Text>
         </TouchableOpacity>

@@ -47,10 +47,8 @@ class HomeView extends Component {
   }
 
   componentWillMount() {
-  
       this.setState({ allNews: [], searchQuery: '' });
       this._loadMoreContentAsync();
-    
   }
 
   componentDidMount() {
@@ -113,10 +111,11 @@ class HomeView extends Component {
     if (maxItems >= this.state.currentPageIndex * ITEMS_PER_PAGE) {
       if(isFilter){
         this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,this.state.currentPageIndex+1,ITEMS_PER_PAGE));
+        this.setState({ currentPageIndex: this.state.currentPageIndex + 1, });
       }else{
         this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE))
         : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex + 1, ITEMS_PER_PAGE));
-      this.setState({ currentPageIndex: this.state.currentPageIndex + 1, });
+        this.setState({ currentPageIndex: this.state.currentPageIndex + 1, });
       }
       
     }
