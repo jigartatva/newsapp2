@@ -28,7 +28,8 @@ class HomeView extends Component {
   };
   static navigationOptions = ({ navigation }) => ({
     title: HomeViewTitle,
-    gesturesEnabled: false
+    gesturesEnabled: false,
+    headerRight : (<Icon name={"filter"} size={35} onPress={() => navigation.navigate("Filter")}/>)
   });
 
   constructor(props) {
@@ -42,6 +43,7 @@ class HomeView extends Component {
       allNews: [],
       searchQuery: '',
       isFilter:false,
+      isSearch:false
     };
     this.renderLoadMoreItems = this.renderLoadMoreItems.bind(this);
   }
@@ -95,7 +97,6 @@ class HomeView extends Component {
     );
   }
 
-
   _loadMoreContentAsync = async () => {
     this.setState({ isLoadMore: true });
     this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE))
@@ -110,7 +111,7 @@ class HomeView extends Component {
     let maxItems = newsProps.totalResults;
     if (maxItems >= this.state.currentPageIndex * ITEMS_PER_PAGE) {
       if(isFilter){
-        this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,this.state.currentPageIndex+1,ITEMS_PER_PAGE));
+        this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,this.state.currentPageIndex,ITEMS_PER_PAGE));
         this.setState({ currentPageIndex: this.state.currentPageIndex + 1, });
       }else{
         this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE))
@@ -138,19 +139,17 @@ class HomeView extends Component {
           <ActivityIndicator size="large" color="#0000ff" animating={this.props.loading} />
         </View>
 
-        <View style={{ justifyContent: 'flex-start',flexDirection : 'row', width: '100%', height: '15%' }}>
+        <View style={{ justifyContent: 'flex-start',flexDirection : 'row', width: '100%', flex:1 }}>
           
             <View style={{flex:10}}>
               <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
             </View>
-            <View style={{flex:1  }}>
-              <Icon name={"filter"} size={35} onPress={() => this.props.navigation.navigate("Filter")}/>
-            </View>
         </View>
 
-        <View style={{ backgroundColor: 'greeen', justifyContent: 'flex-start', width: '100%', height: '80%' }}>
+        <View style={{ backgroundColor: 'greeen', justifyContent: 'flex-start', width: '100%', flex:10 }}>
         <GridView
           itemDimension={150}
+          staticDimention={130}
           spacing={1}
           onEndReached = {this.renderLoadMoreItems}
           refreshControl={this._renderRefreshControl()}         
