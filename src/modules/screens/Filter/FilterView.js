@@ -69,7 +69,7 @@ class FilterView extends Component {
   }
 
    _onapplyFilter(){
-    var isFilter = this.props.navigation.getParam('isFilter');
+    var isFilter = true
     console.log("isFilter==>",isFilter);
         
         var sourceBy="";
@@ -81,7 +81,8 @@ class FilterView extends Component {
           }
         }
         console.log("filter",sourceBy);
-        this.props.navigation.navigate({routeName:'HomeView',params:{sourceBy:sourceBy}})
+        this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,1,10));
+        this.props.navigation.navigate({routeName:'HomeView',params:{sourceBy:sourceBy,isFilter:isFilter}})
         // this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy));
       }
 
