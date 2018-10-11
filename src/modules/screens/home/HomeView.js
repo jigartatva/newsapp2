@@ -17,7 +17,7 @@ import GridView from 'react-native-super-grid';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 /* API */
-import * as NewsAuthAPI from '../../../services/newsAuthAPI';
+import * as NewsAuthAPI from '../../../redux/newsAuthAPI';
 
 const ITEMS_PER_PAGE = 10;
 const { HomeViewTitle } = AllTexts;
@@ -47,11 +47,7 @@ class HomeView extends Component {
   }
 
   componentWillMount() {
-    if(this.state.isFilter){
-      var sourceBy = this.props.navigation.getParam('sourceBy');
-      console.log("sourceBy====>",sourceBy);
-      this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy));
-    }
+  
       this.setState({ allNews: [], searchQuery: '' });
       this._loadMoreContentAsync();
     
@@ -71,7 +67,7 @@ class HomeView extends Component {
       if (CommonFunctions.isJson(nextProps.newsList)) {
         let articles = JSON.parse(nextProps.newsList).articles;
         if (this.state.currentPageIndex == 1) {
-          this.setState({ allNews: [articles] });
+          this.setState({ allNews: articles });
         } else {
           this.setState({ allNews: [...this.state.allNews, ...articles] });
         }
@@ -110,12 +106,19 @@ class HomeView extends Component {
   }
 
   renderLoadMoreItems() {
-    let newsProps = JSON.parse(this.props.newsList);
+    var isFilter =this.props.navigation.getParam('isFilter');
+    var sourceBy =this.props.navigation.getParam('sourceBy');
+     let newsProps = JSON.parse(this.props.newsList);
     let maxItems = newsProps.totalResults;
     if (maxItems >= this.state.currentPageIndex * ITEMS_PER_PAGE) {
-      this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE))
+      if(isFilter){
+        this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,this.state.currentPageIndex+1,ITEMS_PER_PAGE));
+      }else{
+        this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE))
         : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex + 1, ITEMS_PER_PAGE));
       this.setState({ currentPageIndex: this.state.currentPageIndex + 1, });
+      }
+      
     }
   }
 
@@ -142,7 +145,7 @@ class HomeView extends Component {
               <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
             </View>
             <View style={{flex:1  }}>
-              <Icon name={"filter"} size={35}/>
+              <Icon name={"filter"} size={35} onPress={() => this.props.navigation.navigate("Filter")}/>
             </View>
         </View>
 
