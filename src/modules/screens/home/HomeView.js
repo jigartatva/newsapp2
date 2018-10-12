@@ -30,12 +30,6 @@ class HomeView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: HomeViewTitle,
     gesturesEnabled: false,
-<<<<<<< HEAD
-||||||| merged common ancestors
-    headerRight : ( <Icon name={"filter"} size={35} onPress={this.props.loading?null:this._onFilter}/>)
-=======
-    headerRight : ( <Icon name={"filter"} size={35} />)
->>>>>>> 70ce3a260af8974db6d6a4b2a85dbd659aeaeb48
   });
 
   constructor(props) {
@@ -147,8 +141,8 @@ class HomeView extends Component {
 
   _onFilter(){
     var sourceBy =this.props.navigation.getParam('sourceBy')?this.props.navigation.getParam('sourceBy'):null ;
-    this.setState({currentPageIndex:1,allNews:[:[]})
-    this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery,sourceBy:s:sourceBy}})
+    this.setState({currentPageIndex:1,allNews: []})
+    this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery,sourceBy:sourceBy}})
   }
 
   render() { 
