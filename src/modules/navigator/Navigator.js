@@ -15,9 +15,7 @@ export const MainScreenNavigator = createStackNavigator({
   },
   Filter: {
     screen: FilterViewContainer,
-    navigationOptions: {
-      title : "sources"
-    },
+   
   }
 }, {
   headerMode: 'screen'

@@ -10,6 +10,11 @@ import SelectMultiple from 'react-native-select-multiple'
 
 
 class FilterView extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: "Source List",
+    gesturesEnabled: false,
+  
+  });
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +28,7 @@ class FilterView extends Component {
     };
     this._onapplyFilter =this._onapplyFilter.bind(this);
     this._fetchSourcesList=this._fetchSourcesList.bind(this)
+    this._onClear=this._onClear.bind(this)
   }
   
   componentWillMount() {
@@ -48,8 +54,13 @@ class FilterView extends Component {
   
 
   componentWillReceiveProps(nextProps) {
-
-    if (nextProps.newsSources !== this.props.newsSources) {
+    var sourceBy = this.props.navigation.getParam('sourceBy') ;
+    if(sourceBy!=null){
+    var preselectedItems= sourceBy.split(',');
+    console.log("preselectedItems===>",preselectedItems);
+    this.setState({selectedItems:preselectedItems})
+    }
+ if (nextProps.newsSources !== this.props.newsSources) {
       if (CommonFunctions.isJson(nextProps.newsSources)) {
         let sources = JSON.parse(nextProps.newsSources)
       this.setState({ items: sources });
@@ -103,6 +114,11 @@ class FilterView extends Component {
    
         // this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy));
       }
+ _onClear(){
+// this._fetchSourcesList
+console.log("clear")
+  this.setState({selectedItems:[]})
+ }
 
   render() {
    console.log("items==>",this.state.items) 

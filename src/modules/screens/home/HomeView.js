@@ -141,7 +141,7 @@ class HomeView extends Component {
 
   _onFilter(){
     var sourceBy =this.props.navigation.getParam('sourceBy')?this.props.navigation.getParam('sourceBy'):null ;
-    this.setState({currentPageIndex:1,allNews: []})
+    this.setState({currentPageIndex:1,})
     this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery,sourceBy:sourceBy}})
   }
 
@@ -160,9 +160,6 @@ class HomeView extends Component {
           <View style={{flex:10}}>
             <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
           </View>
-          <View style={{flex:1}}>
-              <Icon name={"filter"} size={35} onPress={this.props.loading?null:this._onFilter}/>
-            </View>
         </View>
 
         <View style={{ backgroundColor: 'greeen', justifyContent: 'flex-start', flex:10 ,width:'100%',paddingRight:20}}>
