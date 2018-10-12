@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator,TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator,TouchableOpacity ,ToastAndroid} from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -47,6 +47,7 @@ class HomeView extends Component {
     };
     this.renderLoadMoreItems = this.renderLoadMoreItems.bind(this);
     this._onFilter =this._onFilter.bind(this);
+    this._onLoading =this._onLoading.bind(this);
   }
 
   componentWillMount() {
@@ -145,6 +146,10 @@ class HomeView extends Component {
     this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery,sourceBy:sourceBy}})
   }
 
+  _onLoading() {
+    ToastAndroid.show("please wait");
+  }
+
   render() { 
     return (
       
@@ -193,7 +198,7 @@ class HomeView extends Component {
           <ActionButton
             buttonColor="rgba(231,76,60,1)"
             icon={<Icon name='filter' size={35}/>}
-            onPress={this.props.loading?null:this._onFilter}
+            onPress={this.props.loading?this._onLoading:this._onFilter}
           />
           
           
