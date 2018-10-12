@@ -29,7 +29,7 @@ class HomeView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: HomeViewTitle,
     gesturesEnabled: false,
-    headerRight : (<Icon name={"filter"} size={35} style={{marginRight:10}} onPress={() => navigation.navigate('Filter')}/>)
+    headerRight : ( <Icon name={"filter"} size={35} onPress={this.props.loading?null:this._onFilter}/>)
   });
 
   constructor(props) {
@@ -66,14 +66,15 @@ class HomeView extends Component {
     if (nextProps.newsList !== this.props.newsList) {
       if (CommonFunctions.isJson(nextProps.newsList)) {
         let articles = JSON.parse(nextProps.newsList).articles;
+        console.log("articles====>",articles)
         if (this.state.currentPageIndex == 1) {
           this.setState({ allNews: articles });
         } else {
           this.setState({ allNews: [...this.state.allNews, ...articles] });
         }
-        this.setState({ dataSource: this.getUpdatedDataSource(this.state.allNews), isLoadMore: false }); 
+        this.setState({ dataSource: this.getUpdatedDataSource(this.state.allNews), isLoadMore: false });
+      }
     }
-  }
 
   }
 
@@ -98,26 +99,30 @@ class HomeView extends Component {
   }
 
   _loadMoreContentAsync = async () => {
+    var sourceBy =this.props.navigation.getParam('sourceBy') ? this.props.navigation.getParam('sourceBy'):null ;
+    // console.log("sourceBy loadmoreconternt ==>",sourceBy)
     this.setState({ isLoadMore: true });
-    this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE))
-      : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex, ITEMS_PER_PAGE));
+    this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE,sourceBy))
+      : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex, ITEMS_PER_PAGE,sourceBy));
     this.setState({ isLoadMore: false });
   }
 
   renderLoadMoreItems() {
     var isFilter =this.props.navigation.getParam('isFilter');
-    var sourceBy =this.props.navigation.getParam('sourceBy');
-    let newsProps = JSON.parse(this.props.newsList);
+    var sourceBy =this.props.navigation.getParam('sourceBy') ? this.props.navigation.getParam('sourceBy'):null ;
+    console.log("sourceBy rendermoreconternt ==>",sourceBy)
+
+     let newsProps = JSON.parse(this.props.newsList);
     let maxItems = newsProps.totalResults;
     if (maxItems >= this.state.currentPageIndex * ITEMS_PER_PAGE) {
-      if(isFilter){
-        this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,this.state.currentPageIndex,ITEMS_PER_PAGE));
-        this.setState({ currentPageIndex: this.state.currentPageIndex + 1, });
-      }else{
-        this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE))
-        : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex + 1, ITEMS_PER_PAGE));
-        this.setState({ currentPageIndex: this.state.currentPageIndex + 1, });
-      }
+      // if(isFilter){
+      //   this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,this.state.currentPageIndex,ITEMS_PER_PAGE));
+      //   this.setState({ currentPageIndex: this.state.currentPageIndex + 1 });
+      // }else{
+        this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex +1, ITEMS_PER_PAGE,sourceBy))
+        : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex + 1, ITEMS_PER_PAGE,sourceBy));
+        this.setState({ currentPageIndex: this.state.currentPageIndex + 1 });
+      // }
       
     }
   }
@@ -130,6 +135,11 @@ class HomeView extends Component {
   _onCancel() {
     this.setState({ allNews: [], searchQuery: '' });
     this._loadMoreContentAsync();
+  }
+
+  _onFilter(){
+    this.setState({currentPageIndex:1,allNews:[]})
+    this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery}})
   }
 
   render() { 

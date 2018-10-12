@@ -21,6 +21,10 @@ function* getNewsListBySourcesWatcher() {
   yield takeLatest(NewsActions.GET_NEWSLIST_SOURCES, getNewsListBySourcesHandler);
 }
 
+function* getNewsListBySourcesOnTopHeadlinesWatcher() {
+  yield takeLatest(NewsActions.GET_NEWSLIST_SOURCES_TOPHEADLINES, getNewsListBySourcesOnTopHeadlinesHandler);
+}
+
 function* getNewsSourcesWatcher() {
   yield takeEvery(NewsActions.GET_NEWS_SOURCES, getNewsSourcesHandler);
 }
@@ -28,7 +32,13 @@ function* getNewsSourcesWatcher() {
 function* getNewsListHandler(value) {
   yield put(AppActions.setLoader(true));
   try {
-    const requestUrl = `${API_ROOT}/top-headlines?country=${deviceCountry}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
+    const requestUrl='';
+    if(value.payload.sourceby){
+       requestUrl = `${API_ROOT}/top-headlines?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
+    }else{
+      requestUrl = `${API_ROOT}/top-headlines?country=${deviceCountry}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
+    }
+   
     let result = yield fetch(requestUrl)
       .then(response => response.json());
     if (result.status === "ok") {
@@ -46,7 +56,7 @@ function* getNewsListHandler(value) {
 function* getNewsListBySearchHandler(value) {
   yield put(AppActions.setLoader(true));
   try {
-    const requestUrl = `${API_ROOT}/everything?q=${value.payload.searchby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&sortBy=relevancy&apiKey=${API_KEY}`;
+    const requestUrl = `${API_ROOT}/everything?q=${value.payload.searchby}&sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&sortBy=relevancy&apiKey=${API_KEY}`;
     let result = yield fetch(requestUrl)
       .then(response => response.json());
     // console.log('result', result);
@@ -102,9 +112,31 @@ function* getNewsListBySourcesHandler(value) {
   }
   yield put(AppActions.setLoader(false));
 }
+
+function* getNewsListBySourcesOnTopHeadlinesHandler(value) {
+  yield put(AppActions.setLoader(true));
+  try {
+    const requestUrl =`${API_ROOT}/top-headlines?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
+    let result = yield fetch(requestUrl)
+      .then(response => response.json());
+    console.log('result', result);
+    if (result.status === "ok") {
+      yield put(NewsActions.getNewsListSuccess(result));
+    } else {
+      Alert.alert(result.code, result.message);
+      yield put(NewsActions.getNewsListFail(""));
+    }
+
+  } catch (error) {
+    yield put(NewsActions.getNewsListFail(""));
+  }
+  yield put(AppActions.setLoader(false));
+}
+
 export default [
   getNewsListWatcher,
   getNewsListBySearchWatcher,
   getNewsSourcesWatcher,
-  getNewsListBySourcesWatcher
+  getNewsListBySourcesWatcher,
+  getNewsListBySourcesOnTopHeadlinesWatcher
 ];

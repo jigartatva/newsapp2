@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text,TouchableOpacity } from "react-native";
+import { View, Text,TouchableOpacity,Alert } from "react-native";
 import { connect } from "react-redux";
 //styles
 import styles from "./FilterViewStyles";
@@ -18,7 +18,6 @@ class FilterView extends Component {
       // }),
       isLoadMore: false,
       items:[],
-     
      selectedItems:[],
      
     };
@@ -33,8 +32,7 @@ class FilterView extends Component {
 
   componentDidMount() {
    
-  this.setState({selectedItems : []});
-   
+  // this.setState({selectedItems : []});
    let sources =this.props.newsSources;
     if(CommonFunctions.isJson(this.props.newsSources)){
       let sources = JSON.parse(this.props.newsSources)
@@ -70,10 +68,10 @@ class FilterView extends Component {
   }
 
    _onapplyFilter(){
-    var isFilter = true
-    console.log("isFilter==>",isFilter);
-        
-        var sourceBy="";
+     var isSearch =  this.props.navigation.getParam('search');
+     if(this.state.selectedItems){
+      var isFilter = true
+   var sourceBy="";
         for(var i=0;i<this.state.selectedItems.length;i++){
           if(sourceBy){
             sourceBy =sourceBy.concat(",",this.state.selectedItems[i].value);
@@ -82,8 +80,27 @@ class FilterView extends Component {
           }
         }
         console.log("filter",sourceBy);
-        this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,1,10));
-        this.props.navigation.navigate({routeName:'HomeView',params:{sourceBy:sourceBy,isFilter:isFilter}})
+        if(isSearch){
+    
+          this.props.dispatch(NewsAuthAPI.getNewsBySearch(isSearch, 1, 10,sourceBy))
+        }else{
+          this.props.dispatch(NewsAuthAPI.getNewsList(1, 10,sourceBy));
+        }
+       
+        this.props.navigation.navigate({routeName:'HomeView',params:{sourceBy:sourceBy,isFilter:isFilter,currentIndexPage:1}})
+     }else{
+      Alert.alert(
+        'Alert Title',
+        'My Alert Msg',
+        [
+          {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+     }
+   
         // this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy));
       }
 
@@ -94,9 +111,9 @@ class FilterView extends Component {
         <SelectMultiple
           items={this.state.items}
           selectedItems={this.state.selectedItems}
-          onSelectionsChange={this.onSelectedItemsChange} />
+          onSelectionsChange={this.onSelectedItemsChange}/>
         <TouchableOpacity activeOpacity={.4} style={styles.TouchableOpacityStyle} onPress={this._onapplyFilter} >
-           <Text style={{ fontSize: 20, textAlign: 'center', paddingTop:10, color: 'black' }}> apply</Text>
+           <Text style={{ fontSize: 20, textAlign: 'center', paddingTop:10, color: 'black' }}> Apply</Text>
         </TouchableOpacity>
       </View>
     );

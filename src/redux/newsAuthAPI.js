@@ -5,6 +5,7 @@ export const GET_NEWSLIST = 'GET_NEWSLIST';
 export const GET_NEWSLIST_SEARCH = 'GET_NEWSLIST_SEARCH';
 export const GET_NEWS_SOURCES = 'GET_NEWS_SOURCES';
 export const GET_NEWSLIST_SOURCES = 'GET_NEWSLIST_SOURCES';
+export const GET_NEWSLIST_SOURCES_TOPHEADLINES='GET_NEWSLIST_SOURCES_TOPHEADLINES'
 
 const GET_NEWSLIST_SUCCESS = 'GET_NEWSLIST_SUCCESS';
 const GET_NEWSLIST_FAILURE = 'GET_NEWSLIST_FAILURE';
@@ -12,9 +13,11 @@ const GET_NEWSLIST_FAILURE = 'GET_NEWSLIST_FAILURE';
 const GET_NEWS_SOURCES_SUCCESS = 'GET_NEWS_SOURCES_SUCCESS';
 const GET_NEWS_SOURCES_FAILURE = 'GET_NEWS_SOURCES_FAILURE';
 
-export const getNewsList = (page, pagesize) => ({
+
+
+export const getNewsList = (page, pagesize,sourceby) => ({
   type: GET_NEWSLIST,
-  payload: { page: page, pagesize: pagesize }
+  payload: { page: page, pagesize: pagesize , sourceby:sourceby}
 });
 
 export const getNewsSources = () => ({
@@ -24,6 +27,11 @@ export const getNewsSources = () => ({
 
 export const getNewsListBySources = (sourceby,page, pagesize) => ({
   type: GET_NEWSLIST_SOURCES,
+  payload: { sourceby: sourceby,page: page, pagesize: pagesize }
+});
+
+export const getNewsListBySourcesOnTopHeadlines = (sourceby,page, pagesize) => ({
+  type: GET_NEWSLIST_SOURCES_TOPHEADLINES,
   payload: { sourceby: sourceby,page: page, pagesize: pagesize }
 });
 
@@ -37,9 +45,9 @@ export const getNewsListFail = (value) => ({
   payload: JSON.stringify(value)
 });
 
-export const getNewsBySearch = (searchby, page, pagesize) => ({
+export const getNewsBySearch = (searchby, page, pagesize,sourceby) => ({
   type: GET_NEWSLIST_SEARCH,
-  payload: { page: page, pagesize: pagesize, searchby: searchby }
+  payload: { page: page, pagesize: pagesize, searchby: searchby ,sourceby:sourceby}
 });
 
 export const getNewsSourcesSuccess = (value) => ({
@@ -52,6 +60,10 @@ export const getNewsSourcesFailure = (value) => ({
   payload: JSON.stringify(value)
 });
 
+// export const isFilter = () => ({
+//   type: IS_FILTER,
+ 
+// });
 /* Initial state */
 const initialState = Map({
   newsList: "",
@@ -69,6 +81,9 @@ export default function newsReducer(state = initialState, action) {
       return state;
 
       case GET_NEWSLIST_SOURCES:
+      return state;
+
+      case GET_NEWSLIST_SOURCES_TOPHEADLINES:
       return state;
 
     case GET_NEWSLIST_SUCCESS:

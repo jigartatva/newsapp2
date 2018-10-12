@@ -8,7 +8,8 @@ export default connect(
       
       loading: state.getIn(['appReducer', 'loading']),
       newsSources: state.getIn(['newsReducer', 'newsSources']),
-      newsList: state.getIn(['newsReducer', 'newsList'])
+      newsList: state.getIn(['newsReducer', 'newsList']),
+      
     }),
     dispatch => {
       return {
