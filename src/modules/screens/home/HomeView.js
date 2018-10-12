@@ -29,7 +29,7 @@ class HomeView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: HomeViewTitle,
     gesturesEnabled: false,
-    headerRight : (<Icon name={"filter"} size={35} onPress={() => navigation.navigate("Filter")}/>)
+    headerRight : (<Icon name={"filter"} size={35} style={{marginRight:10}} onPress={() => navigation.navigate('Filter')}/>)
   });
 
   constructor(props) {
@@ -71,9 +71,9 @@ class HomeView extends Component {
         } else {
           this.setState({ allNews: [...this.state.allNews, ...articles] });
         }
-        this.setState({ dataSource: this.getUpdatedDataSource(this.state.allNews), isLoadMore: false });
-      }
+        this.setState({ dataSource: this.getUpdatedDataSource(this.state.allNews), isLoadMore: false }); 
     }
+  }
 
   }
 
@@ -107,7 +107,7 @@ class HomeView extends Component {
   renderLoadMoreItems() {
     var isFilter =this.props.navigation.getParam('isFilter');
     var sourceBy =this.props.navigation.getParam('sourceBy');
-     let newsProps = JSON.parse(this.props.newsList);
+    let newsProps = JSON.parse(this.props.newsList);
     let maxItems = newsProps.totalResults;
     if (maxItems >= this.state.currentPageIndex * ITEMS_PER_PAGE) {
       if(isFilter){
@@ -132,30 +132,30 @@ class HomeView extends Component {
     this._loadMoreContentAsync();
   }
 
-  render() {
+  render() { 
     return (
       <SafeAreaView style={[styles.container]}>
         <View style={{ justifyContent: 'center', position: 'absolute', zIndex: 1000 }}>
           <ActivityIndicator size="large" color="#0000ff" animating={this.props.loading} />
         </View>
 
-        <View style={{ justifyContent: 'flex-start',flexDirection : 'row', width: '100%', flex:1 }}>
-          
-            <View style={{flex:10}}>
-              <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
-            </View>
+        <View style={{ justifyContent: 'flex-start',flexDirection : 'row', width: '100%', flex:1 }}>          
+
+          <View style={{flex:10}}>
+            <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
+          </View>
         </View>
 
-        <View style={{ backgroundColor: 'greeen', justifyContent: 'flex-start', width: '100%', flex:10 }}>
+        <View style={{ backgroundColor: 'greeen', justifyContent: 'flex-start', flex:10 ,width:'100%',paddingRight:20}}>
         <GridView
           itemDimension={150}
-          staticDimention={130}
-          spacing={1}
+          // staticDimension={130}
+          spacing={0}
           onEndReached = {this.renderLoadMoreItems}
           refreshControl={this._renderRefreshControl()}         
           items={this.state.allNews}
           renderItem={item => (
-            
+
                 <View key={Math.random()} style={styles.articleListView}>
                   <Image source={{ uri: item.urlToImage}} style={{height:'100%' , width: '100%'}}>
                     <View style={{ width: '75%', alignItems: 'flex-start',alignContent:'flex-end', justifyContent: 'flex-end' ,position:'absolute',bottom:5 }}>
