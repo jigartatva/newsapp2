@@ -15,6 +15,7 @@ import ProgressCircle from 'react-native-progress/Circle';
 import Search from 'react-native-search-box';
 import GridView from 'react-native-super-grid';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ActionButton from 'react-native-action-button';
 
 /* API */
 import * as NewsAuthAPI from '../../../redux/newsAuthAPI';
@@ -29,7 +30,6 @@ class HomeView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: HomeViewTitle,
     gesturesEnabled: false,
-    headerRight : ( <Icon name={"filter"} size={35} onPress={this.props.loading?null:this._onFilter}/>)
   });
 
   constructor(props) {
@@ -46,6 +46,7 @@ class HomeView extends Component {
       isSearch:false
     };
     this.renderLoadMoreItems = this.renderLoadMoreItems.bind(this);
+    this._onFilter =this._onFilter.bind(this);
   }
 
   componentWillMount() {
@@ -138,13 +139,17 @@ class HomeView extends Component {
   }
 
   _onFilter(){
-    this.setState({currentPageIndex:1,allNews:[]})
-    this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery}})
+    var sourceBy =this.props.navigation.getParam('sourceBy')?this.props.navigation.getParam('sourceBy'):null ;
+    this.setState({currentPageIndex:1,allNews:[:[]})
+    this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery,sourceBy:s:sourceBy}})
   }
 
   render() { 
     return (
+      
       <SafeAreaView style={[styles.container]}>
+        
+      
         <View style={{ justifyContent: 'center', position: 'absolute', zIndex: 1000 }}>
           <ActivityIndicator size="large" color="#0000ff" animating={this.props.loading} />
         </View>
@@ -157,31 +162,40 @@ class HomeView extends Component {
         </View>
 
         <View style={{ backgroundColor: 'greeen', justifyContent: 'flex-start', flex:10 ,width:'100%',paddingRight:20}}>
-        <GridView
-          itemDimension={150}
-          // staticDimension={130}
-          spacing={0}
-          onEndReached = {this.renderLoadMoreItems}
-          refreshControl={this._renderRefreshControl()}         
-          items={this.state.allNews}
-          renderItem={item => (
+          
+          <GridView
+            itemDimension={150}
+            // staticDimension={130}
+            spacing={0}
+            onEndReached = {this.renderLoadMoreItems}
+            refreshControl={this._renderRefreshControl()}         
+            items={this.state.allNews}
+            renderItem={item => (
 
-                <View key={Math.random()} style={styles.articleListView}>
-                  <Image source={{ uri: item.urlToImage}} style={{height:'100%' , width: '100%'}}>
-                    <View style={{ width: '75%', alignItems: 'flex-start',alignContent:'flex-end', justifyContent: 'flex-end' ,position:'absolute',bottom:5 }}>
-                      <View style={styles.source}>
-                        <Text>{item.hasOwnProperty('source')  ? item.source.name : 'not available'}</Text>
+                  <View key={Math.random()} style={styles.articleListView}>
+                    <Image source={{ uri: item.urlToImage}} style={{height:'100%' , width: '100%'}}>
+                      <View style={{ width: '75%', alignItems: 'flex-start',alignContent:'flex-end', justifyContent: 'flex-end' ,position:'absolute',bottom:5 }}>
+                        <View style={styles.source}>
+                          <Text>{item.hasOwnProperty('source')  ? item.source.name : 'not available'}</Text>
+                        </View>
+                        <View style={styles.shadowView}>
+                          <Text style={styles.listItemTitleText} numberOfLines={3} ellipsizeMode ={'tail'}>{item.title}</Text>
+                        </View>
+                        <Text style={{color:'white',textShadowColor: 'rgba(0, 0, 0, 0.90)',textShadowOffset: {width: -2, height: 2},textShadowRadius: 20}}>publish on: {item.publishedAt}</Text>                                                                                                                                                                                                                                                                                                                 
                       </View>
-                      <View style={styles.shadowView}>
-                        <Text style={styles.listItemTitleText} numberOfLines={3} ellipsizeMode ={'tail'}>{item.title}</Text>
-                      </View>
-                      <Text style={{color:'white',textShadowColor: 'rgba(0, 0, 0, 0.90)',textShadowOffset: {width: -2, height: 2},textShadowRadius: 20}}>publish on: {item.publishedAt}</Text>                                                                                                                                                                                                                                                                                                                 
-                    </View>
-                  </Image>
-                </View>
-              
-          )}
-        />
+                    </Image>
+                  </View>
+                
+            )}
+          />
+          
+          <ActionButton
+            buttonColor="rgba(231,76,60,1)"
+            icon={<Icon name='filter' size={35}/>}
+            onPress={this.props.loading?null:this._onFilter}
+          />
+          
+          
         </View>
       </SafeAreaView>
     );
