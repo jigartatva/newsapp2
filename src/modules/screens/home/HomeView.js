@@ -29,7 +29,7 @@ class HomeView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: HomeViewTitle,
     gesturesEnabled: false,
-    headerRight : ( <Icon name={"filter"} size={35} onPress={this.props.loading?null:this._onFilter}/>)
+    headerRight : ( <Icon name={"filter"} size={35} />)
   });
 
   constructor(props) {
@@ -39,13 +39,14 @@ class HomeView extends Component {
         rowHasChanged: this._rowHasChanged.bind(this),
       }),
       isLoadMore: false,
-      currentPageIndex: 1,
+      currentPageIndex:1,
       allNews: [],
-      searchQuery: '',
+      searchQuery:'',
       isFilter:false,
       isSearch:false
     };
     this.renderLoadMoreItems = this.renderLoadMoreItems.bind(this);
+    this._onFilter =this._onFilter.bind(this);
   }
 
   componentWillMount() {
@@ -128,8 +129,9 @@ class HomeView extends Component {
   }
 
   _onSearch(text) {
+    var sourceBy =this.props.navigation.getParam('sourceBy') ? this.props.navigation.getParam('sourceBy'):null ;
     this.setState({ allNews: [], searchQuery: text });
-    this.props.dispatch(NewsAuthAPI.getNewsBySearch(text, this.state.currentPageIndex, ITEMS_PER_PAGE));
+    this.props.dispatch(NewsAuthAPI.getNewsBySearch(text, this.state.currentPageIndex, ITEMS_PER_PAGE,sourceBy));
   }
 
   _onCancel() {
@@ -154,6 +156,9 @@ class HomeView extends Component {
           <View style={{flex:10}}>
             <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
           </View>
+          <View style={{flex:1}}>
+              <Icon name={"filter"} size={35} onPress={this.props.loading?null:this._onFilter}/>
+            </View>
         </View>
 
         <View style={{ backgroundColor: 'greeen', justifyContent: 'flex-start', flex:10 ,width:'100%',paddingRight:20}}>
