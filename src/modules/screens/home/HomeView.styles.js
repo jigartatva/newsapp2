@@ -4,12 +4,10 @@ import { Colors } from '../../theme/css/Common';
 import * as CommonFunctions from '../../theme/js/CommonFunctions';
 
 const LIST_ITEM_TITLE_TEXT1 = 'rgba(0, 0, 0, 0.90)';
-const LIST_ITEM_TITLE_TEXT2 = 'white';
+const WHITE_COLOR = 'white';
 const SOURCE = "#ff0040";
 const SHADOW = 'rgba(0, 0, 0, 0.75)';
 const PUBLISH = 'rgba(0, 0, 0, 0.90)';
-const PUBLISH_COLOR = 'white';
-const GRID_BACKGROUND = 'green';
 const BORDER = 'black';
 const BORDER_BACK = 'steelblue';
 const styles = StyleSheet.create({
@@ -37,7 +35,7 @@ const styles = StyleSheet.create({
     width: 50
   },
   listItemTitleText: {
-    color: LIST_ITEM_TITLE_TEXT2,
+    color: WHITE_COLOR,
     fontSize: 16,
     padding: 5,
     fontWeight: 'bold',
@@ -76,13 +74,13 @@ const styles = StyleSheet.create({
     flex: 10
   },
   gridview: {
-    backgroundColor: GRID_BACKGROUND, justifyContent: 'flex-start', flex:10 ,width:'100%',paddingRight:20
+    backgroundColor: WHITE_COLOR, justifyContent: 'flex-start', flex:10 ,width:'100%',paddingRight:20
   },
   cardview: {
     width: '75%', alignItems: 'flex-start',alignContent:'flex-end', justifyContent: 'flex-end' ,position:'absolute',bottom:5 
   },
   publish:{
-    color:PUBLISH_COLOR,textShadowColor: PUBLISH,textShadowOffset: {width: -2, height: 2},textShadowRadius: 20
+    color:WHITE_COLOR,textShadowColor: PUBLISH,textShadowOffset: {width: -2, height: 2},textShadowRadius: 20
   },
   image:{
     height:'100%' , width: '100%'
