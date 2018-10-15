@@ -204,9 +204,9 @@ async function bodyOf(requestPromise) {
 function logError(error, endpoint, method) {
   if (error.status) {
     const summary = `(${error.status} ${error.statusText}): ${error._bodyInit}`;
-    console.error(`API request ${method.toUpperCase()} ${endpoint} responded with ${summary}`);
+    // console.error(`API request ${method.toUpperCase()} ${endpoint} responded with ${summary}`);
   }
   else {
-    console.error(`API request ${method.toUpperCase()} ${endpoint} failed with message "${error.message}"`);
+    // console.error(`API request ${method.toUpperCase()} ${endpoint} failed with message "${error.message}"`);
   }
 }

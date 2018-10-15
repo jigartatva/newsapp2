@@ -34,7 +34,7 @@ function* getNewsListHandler(value) {
   try {
     const requestUrl='';
     if(value.payload.sourceby){
-       requestUrl = `${API_ROOT}/top-headlines?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
+      requestUrl = `${API_ROOT}/top-headlines?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
     }else{
       requestUrl = `${API_ROOT}/top-headlines?country=${deviceCountry}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
     }
@@ -80,7 +80,7 @@ function* getNewsSourcesHandler() {
     
     let result = yield fetch(requestUrl)
       .then(response => response.json());
-      console.log("results==>",result);
+      // console.log("results==>",result);
     if (result.status === "ok") {
       yield put(NewsActions.getNewsSourcesSuccess(result.sources));
     } else {
@@ -99,7 +99,7 @@ function* getNewsListBySourcesHandler(value) {
     const requestUrl =`${API_ROOT}/everything?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&sortBy=relevancy&apiKey=${API_KEY}`;
     let result = yield fetch(requestUrl)
       .then(response => response.json());
-    console.log('result', result);
+    // console.log('result', result);
     if (result.status === "ok") {
       yield put(NewsActions.getNewsListSuccess(result));
     } else {
@@ -119,7 +119,7 @@ function* getNewsListBySourcesOnTopHeadlinesHandler(value) {
     const requestUrl =`${API_ROOT}/top-headlines?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
     let result = yield fetch(requestUrl)
       .then(response => response.json());
-    console.log('result', result);
+    // console.log('result', result);
     if (result.status === "ok") {
       yield put(NewsActions.getNewsListSuccess(result));
     } else {

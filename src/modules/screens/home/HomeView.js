@@ -1,6 +1,6 @@
 /* eslint-enable */
 import React, { Component } from 'react';
-import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator,TouchableOpacity ,ToastAndroid} from 'react-native';
+import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator ,ToastAndroid} from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -26,7 +26,7 @@ class HomeView extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
   };
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     title: HomeViewTitle,
     gesturesEnabled: false,
   });
@@ -155,14 +155,14 @@ class HomeView extends Component {
           <ActivityIndicator size="large" color="#0000ff" animating={this.props.loading} />
         </View>
 
-        <View style={{ justifyContent: 'flex-start',flexDirection : 'row', width: '100%', flex:1 }}>          
+        <View style={styles.searchBox}>          
 
-          <View style={{flex:10}}>
+          <View style={styles.subSearchBox}>
             <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
           </View>
         </View>
 
-        <View style={{ backgroundColor: 'greeen', justifyContent: 'flex-start', flex:10 ,width:'100%',paddingRight:20}}>
+        <View style={styles.gridview}>
           
           <GridView
             itemDimension={150}
@@ -174,15 +174,15 @@ class HomeView extends Component {
             renderItem={item => (
 
                   <View key={Math.random()} style={styles.articleListView}>
-                    <Image source={{ uri: item.urlToImage}} style={{height:'100%' , width: '100%'}}>
-                      <View style={{ width: '75%', alignItems: 'flex-start',alignContent:'flex-end', justifyContent: 'flex-end' ,position:'absolute',bottom:5 }}>
+                    <Image source={{ uri: item.urlToImage}} style={styles.image}>
+                      <View style={styles.cardview}>
                         <View style={styles.source}>
                           <Text>{item.hasOwnProperty('source')  ? item.source.name : 'not available'}</Text>
                         </View>
                         <View style={styles.shadowView}>
                           <Text style={styles.listItemTitleText} numberOfLines={3} ellipsizeMode ={'tail'}>{item.title}</Text>
                         </View>
-                        <Text style={{color:'white',textShadowColor: 'rgba(0, 0, 0, 0.90)',textShadowOffset: {width: -2, height: 2},textShadowRadius: 20}}>publish on: {item.publishedAt}</Text>                                                                                                                                                                                                                                                                                                                 
+                        <Text style={styles.publish}>publish on: {item.publishedAt}</Text>                                                                                                                                                                                                                                                                                                                 
                       </View>
                     </Image>
                   </View>

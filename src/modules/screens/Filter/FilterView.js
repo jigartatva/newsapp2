@@ -57,7 +57,7 @@ class FilterView extends Component {
     var sourceBy = this.props.navigation.getParam('sourceBy') ;
     if(sourceBy!=null){
     var preselectedItems= sourceBy.split(',');
-    console.log("preselectedItems===>",preselectedItems);
+    // console.log("preselectedItems===>",preselectedItems);
     this.setState({selectedItems:preselectedItems})
     }
  if (nextProps.newsSources !== this.props.newsSources) {
@@ -82,7 +82,7 @@ class FilterView extends Component {
      var isSearch =  this.props.navigation.getParam('search');
      if(this.state.selectedItems){
       var isFilter = true
-   var sourceBy="";
+      var sourceBy="";
         for(var i=0;i<this.state.selectedItems.length;i++){
           if(sourceBy){
             sourceBy =sourceBy.concat(",",this.state.selectedItems[i].value);
@@ -90,7 +90,7 @@ class FilterView extends Component {
           sourceBy =sourceBy.concat(this.state.selectedItems[i].value);
           }
         }
-        console.log("filter",sourceBy);
+        // console.log("filter",sourceBy);
         if(isSearch){
     
           this.props.dispatch(NewsAuthAPI.getNewsBySearch(isSearch, 1, 10,sourceBy))
@@ -99,29 +99,18 @@ class FilterView extends Component {
         }
        
         this.props.navigation.navigate({routeName:'HomeView',params:{sourceBy:sourceBy,isFilter:isFilter,currentIndexPage:1}})
-     }else{
-      Alert.alert(
-        'Alert Title',
-        'My Alert Msg',
-        [
-          {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ],
-        { cancelable: false }
-      )
      }
    
         // this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy));
       }
  _onClear(){
-// this._fetchSourcesList
-console.log("clear")
-  this.setState({selectedItems:[]})
+    // this._fetchSourcesList
+    // console.log("clear")
+    this.setState({selectedItems:[]})
  }
 
   render() {
-   console.log("items==>",this.state.items) 
+  //  console.log("items==>",this.state.items) 
     return (
       <View style={styles.container}>
         <SelectMultiple
@@ -129,7 +118,7 @@ console.log("clear")
           selectedItems={this.state.selectedItems}
           onSelectionsChange={this.onSelectedItemsChange}/>
         <TouchableOpacity activeOpacity={.4} style={styles.TouchableOpacityStyle} onPress={this._onapplyFilter} >
-           <Text style={{ fontSize: 20, textAlign: 'center', paddingTop:10, color: 'black' }}> Apply</Text>
+           <Text style={styles.applyBtn}> Apply</Text>
         </TouchableOpacity>
       </View>
     );
