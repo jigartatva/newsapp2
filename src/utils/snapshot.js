@@ -28,7 +28,7 @@ async function persist(state) {
   try {
     await AsyncStorage.setItem(STATE_STORAGE_KEY, JSON.stringify(state));
   } catch (e) {
-    console.error('Error persisting application state', e);
+    // console.error('Error persisting application state', e);
   }
 }
 
@@ -44,7 +44,7 @@ async function rehydrate() {
       ? JSON.parse(state)
       : null;
   } catch (e) {
-    console.error('Error reading persisted application state', e);
+    // console.error('Error reading persisted application state', e);
     return null;
   }
 }
@@ -53,6 +53,6 @@ async function clear() {
   try {
     await AsyncStorage.removeItem(STATE_STORAGE_KEY);
   } catch (e) {
-    console.error('Error clearing peristed application state', e);
+    // console.error('Error clearing peristed application state', e);
   }
 }
