@@ -12,6 +12,8 @@ import {
  * It can be accessed through a tiny button in the bottom right corner of the screen.
  * ONLY FOR DEVELOPMENT MODE!
  */
+const CIRCLE_COLOR = '#fff';
+
 class DeveloperMenu extends Component {
   static displayName = 'DeveloperMenu';
 
@@ -25,7 +27,7 @@ class DeveloperMenu extends Component {
     const callback = async index => {
       if (index === options.clearState) {
         await snapshot.clearSnapshot();
-        console.warn('(╯°□°）╯︵ ┻━┻ \nState cleared, Cmd+R to reload the application now');
+        // console.warn('(╯°□°）╯︵ ┻━┻ \nState cleared, Cmd+R to reload the application now');
       }
     };
 
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#fff'
+    backgroundColor: CIRCLE_COLOR
   }
 });
 

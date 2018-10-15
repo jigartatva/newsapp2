@@ -35,14 +35,14 @@ class AppView extends Component {
   render() {
     if (!this.props.isReady) {
       return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={styles.container}>
           <ActivityIndicator style={styles.centered} />
         </SafeAreaView>
       );
     }
 
     return (
-      <View style={{flex: 1}}>
+      <View style={styles.container}>
         <StatusBar backgroundColor='#455a64' barStyle='light-content' />
         <NavigatorViewContainer />
         {__DEV__ && <DeveloperMenu />}
@@ -55,6 +55,9 @@ const styles = StyleSheet.create({
   centered: {
     flex: 1,
     alignSelf: 'center'
+  },
+  container:{
+    flex: 1
   }
 });
 

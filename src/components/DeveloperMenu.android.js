@@ -13,6 +13,10 @@ import {
  * It can be accessed through a tiny button in the bottom right corner of the screen.
  * ONLY FOR DEVELOPMENT MODE!
  */
+
+ const MENU_COLOR = 'white';
+ const CIRCLE_COLOR = '#fff';
+ const MENU_ITEM_COLOR = '#eee' 
 class DeveloperMenu extends Component {
   static displayName = 'DeveloperMenu';
 
@@ -27,7 +31,7 @@ class DeveloperMenu extends Component {
 
   clearState = async () => {
     await snapshot.clearSnapshot();
-    console.warn('(╯°□°）╯︵ ┻━┻ \nState cleared, Cmd+R to reload the application now');
+    // console.warn('(╯°□°）╯︵ ┻━┻ \nState cleared, Cmd+R to reload the application now');
     this.closeMenu();
   };
 
@@ -82,10 +86,10 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#fff'
+    backgroundColor: CIRCLE_COLOR
   },
   menu: {
-    backgroundColor: 'white',
+    backgroundColor: MENU_COLOR,
     position: 'absolute',
     left: 0,
     right: 0,
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: MENU_ITEM_COLOR,
     padding: 10,
     height: 60
   },

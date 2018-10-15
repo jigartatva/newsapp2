@@ -1,27 +1,25 @@
 import {
-  createTabNavigator,
   createStackNavigator
-} from 'react-navigation';
+} from 'react-navigation'
 
-import HomeViewContainer from '../screens/home/HomeViewContainer';
-import FilterViewContainer from '../screens/Filter/FilterViewContainer';
-
+import HomeViewContainer from '../screens/home/HomeViewContainer'
+import FilterViewContainer from '../screens/Filter/FilterViewContainer'
 
 // MainStack is nested inside StackNavigator
 export const MainScreenNavigator = createStackNavigator({
   HomeView: {
-    screen: HomeViewContainer,
-    
+    screen: HomeViewContainer
+
   },
   Filter: {
-    screen: FilterViewContainer,
-   
+    screen: FilterViewContainer
+
   }
 }, {
   headerMode: 'screen'
 }, {
   initialRouteName: 'HomeView'
-});
+})
 
 // Root navigator is a StackNavigator
 const AppNavigator = createStackNavigator({
@@ -29,10 +27,10 @@ const AppNavigator = createStackNavigator({
     screen: MainScreenNavigator,
     navigationOptions: {
       header: null
-    },
+    }
 
-  },
+  }
 
-});
+})
 
-export default AppNavigator;
+export default AppNavigator
