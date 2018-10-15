@@ -51,6 +51,11 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     backgroundColor: 'steelblue',
+  },
+  activityIndicator:{
+    justifyContent: 'center',
+    position: 'absolute',
+    zIndex: 1000
   }
 });
 

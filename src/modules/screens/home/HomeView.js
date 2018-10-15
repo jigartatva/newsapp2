@@ -1,3 +1,4 @@
+/* eslint-enable */
 import React, { Component } from 'react';
 import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator,TouchableOpacity ,ToastAndroid} from 'react-native';
 import { connect } from 'react-redux';
@@ -9,9 +10,7 @@ import { AllTexts } from '../../theme/css/Common';
 import * as CommonFunctions from '../../theme/js/CommonFunctions';
 
 /* external libraries */
-import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import Image from 'react-native-image-progress';
-import ProgressCircle from 'react-native-progress/Circle';
 import Search from 'react-native-search-box';
 import GridView from 'react-native-super-grid';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -43,7 +42,8 @@ class HomeView extends Component {
       allNews: [],
       searchQuery:'',
       isFilter:false,
-      isSearch:false
+      isSearch:false,
+      sourceBy:""
     };
     this.renderLoadMoreItems = this.renderLoadMoreItems.bind(this);
     this._onFilter =this._onFilter.bind(this);
@@ -68,7 +68,6 @@ class HomeView extends Component {
     if (nextProps.newsList !== this.props.newsList) {
       if (CommonFunctions.isJson(nextProps.newsList)) {
         let articles = JSON.parse(nextProps.newsList).articles;
-        console.log("articles====>",articles)
         if (this.state.currentPageIndex == 1) {
           this.setState({ allNews: articles });
         } else {
@@ -77,7 +76,10 @@ class HomeView extends Component {
         this.setState({ dataSource: this.getUpdatedDataSource(this.state.allNews), isLoadMore: false });
       }
     }
-
+    if(nextProps.navigation.getParam('sourceBy') !== this.state.sourceBy)
+    {
+      this.setState({sourceBy : nextProps.navigation.getParam('sourceBy')});
+    }
   }
 
   getUpdatedDataSource(props) {
@@ -91,7 +93,7 @@ class HomeView extends Component {
   }
 
   _renderRefreshControl() {
- 
+
     return (
       <RefreshControl
         refreshing={this.state.isLoadMore}
@@ -101,28 +103,23 @@ class HomeView extends Component {
   }
 
   _loadMoreContentAsync = async () => {
-    var sourceBy =this.props.navigation.getParam('sourceBy') ? this.props.navigation.getParam('sourceBy'):null ;
     // console.log("sourceBy loadmoreconternt ==>",sourceBy)
     this.setState({ isLoadMore: true });
-    this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE,sourceBy))
-      : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex, ITEMS_PER_PAGE,sourceBy));
+    this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE,this.state.sourceBy))
+      : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex, ITEMS_PER_PAGE,this.state.sourceBy));
     this.setState({ isLoadMore: false });
   }
 
   renderLoadMoreItems() {
-    var isFilter =this.props.navigation.getParam('isFilter');
-    var sourceBy =this.props.navigation.getParam('sourceBy') ? this.props.navigation.getParam('sourceBy'):null ;
-    console.log("sourceBy rendermoreconternt ==>",sourceBy)
-
-     let newsProps = JSON.parse(this.props.newsList);
+    let newsProps = JSON.parse(this.props.newsList);
     let maxItems = newsProps.totalResults;
     if (maxItems >= this.state.currentPageIndex * ITEMS_PER_PAGE) {
       // if(isFilter){
       //   this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,this.state.currentPageIndex,ITEMS_PER_PAGE));
       //   this.setState({ currentPageIndex: this.state.currentPageIndex + 1 });
       // }else{
-        this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex +1, ITEMS_PER_PAGE,sourceBy))
-        : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex + 1, ITEMS_PER_PAGE,sourceBy));
+        this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex +1, ITEMS_PER_PAGE,this.state.sourceBy))
+        : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex + 1, ITEMS_PER_PAGE,this.state.sourceBy));
         this.setState({ currentPageIndex: this.state.currentPageIndex + 1 });
       // }
       
@@ -130,24 +127,22 @@ class HomeView extends Component {
   }
 
   _onSearch(text) {
-    var sourceBy =this.props.navigation.getParam('sourceBy') ? this.props.navigation.getParam('sourceBy'):null ;
     this.setState({ allNews: [], searchQuery: text });
-    this.props.dispatch(NewsAuthAPI.getNewsBySearch(text, this.state.currentPageIndex, ITEMS_PER_PAGE,sourceBy));
+    this.props.dispatch(NewsAuthAPI.getNewsBySearch(text, this.state.currentPageIndex, ITEMS_PER_PAGE,this.state.sourceBy));
   }
 
   _onCancel() {
-    this.setState({ allNews: [], searchQuery: '' });
+    this.setState({ allNews: [], searchQuery: '' ,currentPageIndex: 1});
     this._loadMoreContentAsync();
   }
 
   _onFilter(){
-    var sourceBy =this.props.navigation.getParam('sourceBy')?this.props.navigation.getParam('sourceBy'):null ;
     this.setState({currentPageIndex:1,})
-    this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery,sourceBy:sourceBy}})
+    this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery,sourceBy:this.state.sourceBy}})
   }
 
   _onLoading() {
-    ToastAndroid.show("please wait");
+    ToastAndroid.show("please wait",ToastAndroid.SHORT);
   }
 
   render() { 
@@ -156,7 +151,7 @@ class HomeView extends Component {
       <SafeAreaView style={[styles.container]}>
         
       
-        <View style={{ justifyContent: 'center', position: 'absolute', zIndex: 1000 }}>
+        <View style={styles.activityIndicator}>
           <ActivityIndicator size="large" color="#0000ff" animating={this.props.loading} />
         </View>
 
