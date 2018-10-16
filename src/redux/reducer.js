@@ -1,6 +1,6 @@
 import { Map, fromJS } from 'immutable'
 import { loop, combineReducers } from 'redux-loop-symbol-ponyfill'
-import SessionStateReducer, { RESET_STATE } from '../modules/session/SessionState'
+import SessionStateReducer, { RESET_STATE } from '../containers/session/SessionState'
 // ## Generator Reducer Imports
 import appReducer from '../services/services'
 import newsReducer from '../redux/newsAuthAPI'
