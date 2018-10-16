@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 //styles
 import styles from "./FilterViewStyles";
 
-import * as NewsAuthAPI from '../../../redux/newsAuthAPI'
-import * as CommonFunctions from '../../theme/js/CommonFunctions';
+import * as NewsAuthAPI from '../../../redux/NewsAuthAPI'
+import * as CommonFunctions from '../../theme/functions/CommonFunctions';
 import SelectMultiple from 'react-native-select-multiple'
 
 

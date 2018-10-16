@@ -1,13 +1,14 @@
 import { put, takeLatest, takeEvery } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import * as AppActions from '../services/services';
-import * as NewsActions from '../redux/newsAuthAPI';
-import * as apiEndpoints from '../services/apiConfig';
+import * as AppActions from '../services/Services';
+import * as NewsActions from '../redux/NewsAuthAPI';
+import * as apiEndpoints from '../services/ApiConfig';
 
 const deviceCountry = DeviceInfo.getDeviceCountry();
 const API_ROOT = apiEndpoints.api;
 const API_KEY = apiEndpoints.key;
+var requestUrl ='';
 
 function* getNewsListWatcher() {
   yield takeEvery(NewsActions.GET_NEWSLIST, getNewsListHandler);
@@ -32,7 +33,7 @@ function* getNewsSourcesWatcher() {
 function* getNewsListHandler(value) {
   yield put(AppActions.setLoader(true));
   try {
-    const requestUrl='';
+    // const requestUrl='';
     if(value.payload.sourceby){
       requestUrl = `${API_ROOT}/top-headlines?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
     }else{
@@ -56,7 +57,7 @@ function* getNewsListHandler(value) {
 function* getNewsListBySearchHandler(value) {
   yield put(AppActions.setLoader(true));
   try {
-    const requestUrl = `${API_ROOT}/everything?q=${value.payload.searchby}&sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&sortBy=relevancy&apiKey=${API_KEY}`;
+    requestUrl = `${API_ROOT}/everything?q=${value.payload.searchby}&sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&sortBy=relevancy&apiKey=${API_KEY}`;
     let result = yield fetch(requestUrl)
       .then(response => response.json());
     // console.log('result', result);
@@ -76,7 +77,7 @@ function* getNewsListBySearchHandler(value) {
 function* getNewsSourcesHandler() {
   yield put(AppActions.setLoader(true));
   try {
-    const requestUrl =`${API_ROOT}/sources?apiKey=${API_KEY}`;
+    requestUrl =`${API_ROOT}/sources?apiKey=${API_KEY}`;
     
     let result = yield fetch(requestUrl)
       .then(response => response.json());
@@ -96,7 +97,7 @@ function* getNewsSourcesHandler() {
 function* getNewsListBySourcesHandler(value) {
   yield put(AppActions.setLoader(true));
   try {
-    const requestUrl =`${API_ROOT}/everything?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&sortBy=relevancy&apiKey=${API_KEY}`;
+    requestUrl =`${API_ROOT}/everything?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&sortBy=relevancy&apiKey=${API_KEY}`;
     let result = yield fetch(requestUrl)
       .then(response => response.json());
     // console.log('result', result);
@@ -116,7 +117,7 @@ function* getNewsListBySourcesHandler(value) {
 function* getNewsListBySourcesOnTopHeadlinesHandler(value) {
   yield put(AppActions.setLoader(true));
   try {
-    const requestUrl =`${API_ROOT}/top-headlines?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
+    requestUrl =`${API_ROOT}/top-headlines?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
     let result = yield fetch(requestUrl)
       .then(response => response.json());
     // console.log('result', result);

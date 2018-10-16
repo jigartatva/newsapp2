@@ -1,13 +1,13 @@
 /* eslint-enable */
 import React, { Component } from 'react';
-import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator ,ToastAndroid} from 'react-native';
+import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator,ToastAndroid} from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* styles and functions */
 import styles from './HomeView.styles';
-import { AllTexts } from '../../theme/css/Common';
-import * as CommonFunctions from '../../theme/js/CommonFunctions';
+import { AllTexts } from '../../theme/styles/Common';
+import * as CommonFunctions from '../../theme/functions/CommonFunctions';
 
 /* external libraries */
 import Image from 'react-native-image-progress';
@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ActionButton from 'react-native-action-button';
 
 /* API */
-import * as NewsAuthAPI from '../../../redux/newsAuthAPI';
+import * as NewsAuthAPI from '../../../redux/NewsAuthAPI';
 
 const ITEMS_PER_PAGE = 10;
 const { HomeViewTitle } = AllTexts;

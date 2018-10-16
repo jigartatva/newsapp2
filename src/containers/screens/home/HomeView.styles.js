@@ -1,7 +1,7 @@
 /* import libraries */
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../theme/css/Common';
-import * as CommonFunctions from '../../theme/js/CommonFunctions';
+import { Colors } from '../../theme/styles/Common';
+import * as CommonFunctions from '../../theme/functions/CommonFunctions';
 
 const LIST_ITEM_TITLE_TEXT1 = 'rgba(0, 0, 0, 0.90)';
 const WHITE_COLOR = 'white';

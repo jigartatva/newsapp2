@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux';
-import store from './src/redux/store';
+import store from './src/redux/Store';
 import { AppRegistry } from 'react-native';
 import React, {Component} from 'react';
 

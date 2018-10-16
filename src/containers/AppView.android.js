@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {View, StyleSheet, StatusBar, ActivityIndicator, BackHandler} from 'react-native';
 import NavigatorViewContainer from './navigator/NavigatorViewContainer';
-import * as snapshotUtil from '../utils/snapshot';
-import * as SessionStateActions from '../modules/session/SessionState';
-import store from '../redux/store';
+import * as snapshotUtil from '../utils/Snapshot';
+import * as SessionStateActions from '../containers/session/SessionState';
+import store from '../redux/Store';
 import DeveloperMenu from '../components/DeveloperMenu';
 
 class AppView extends Component {

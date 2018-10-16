@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
 import HttpError from 'standard-http-error';
-import {getConfiguration} from '../utils/configuration';
-import {getAuthenticationToken} from '../utils/authentication';
+import {getConfiguration} from '../utils/Configuration';
+import {getAuthenticationToken} from '../utils/Authentication';
 
 const EventEmitter = require('event-emitter');
 

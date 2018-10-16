@@ -1,9 +1,9 @@
 import { applyMiddleware, createStore, compose } from 'redux'
 import * as reduxLoop from 'redux-loop-symbol-ponyfill'
-import middleware from './middleware'
-import reducer from './reducer'
+import middleware from './Middleware'
+import reducer from './Reducer'
 import createSagaMiddleware from 'redux-saga'
-import rootSaga from '../sagas'
+import rootSaga from '../sagas/Index'
 const sagaMiddleware = createSagaMiddleware()
 // middleware[sagaMiddleware];
 
