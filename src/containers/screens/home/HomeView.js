@@ -152,7 +152,7 @@ class HomeView extends Component {
         
       
         <View style={styles.activityIndicator}>
-          <ActivityIndicator size="large" color="#0000ff" animating={this.props.loading} />
+          <ActivityIndicator size="large" color={"#0000ff"} animating={this.props.loading} />
         </View>
 
         <View style={styles.searchBox}>          
