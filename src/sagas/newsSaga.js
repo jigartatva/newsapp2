@@ -5,7 +5,6 @@ import * as AppActions from '../services/Services';
 import * as NewsActions from '../redux/NewsAuthAPI';
 import * as apiEndpoints from '../services/ApiConfig';
 
-const deviceCountry = DeviceInfo.getDeviceCountry();
 const API_ROOT = apiEndpoints.api;
 const API_KEY = apiEndpoints.key;
 var requestUrl ='';
@@ -37,7 +36,7 @@ function* getNewsListHandler(value) {
     if(value.payload.sourceby){
       requestUrl = `${API_ROOT}/top-headlines?sources=${value.payload.sourceby}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
     }else{
-      requestUrl = `${API_ROOT}/top-headlines?country=${deviceCountry}&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
+      requestUrl = `${API_ROOT}/top-headlines?country=us&page=${value.payload.page}&pagesize=${value.payload.pagesize}&apiKey=${API_KEY}`;
     }
    
     let result = yield fetch(requestUrl)

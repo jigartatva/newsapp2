@@ -1,21 +1,11 @@
 import React from 'react';
-import HomeView from '../../src/modules/screens/home/HomeView';
+import HomeView from '../../src/containers/screens/home/HomeView';
 import { Provider } from 'react-redux';
-import DeviceInfo from 'react-native-device-info';
-import configureStore from '../../src/redux/store';
+import store from '../../src/redux/store';
 
-const store = configureStore();
+//const store = configureStore();
 
 import renderer from 'react-test-renderer';
-
-jest.mock('react-native-device-info', () => {
-  return {
-    DeviceInfo: {
-      getDeviceCountry: jest.fn()
-    },
-  }
-})
-
 
 describe('NEWS VIEW ', () => {
   jest.mock('WebView');
