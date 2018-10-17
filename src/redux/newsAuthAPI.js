@@ -23,15 +23,6 @@ export const getNewsSources = () => ({
 
 })
 
-export const getNewsListBySources = (sourceby, page, pagesize) => ({
-  type: GET_NEWSLIST_SOURCES,
-  payload: { sourceby: sourceby, page: page, pagesize: pagesize }
-})
-
-export const getNewsListBySourcesOnTopHeadlines = (sourceby, page, pagesize) => ({
-  type: GET_NEWSLIST_SOURCES_TOPHEADLINES,
-  payload: { sourceby: sourceby, page: page, pagesize: pagesize }
-})
 
 export const getNewsListSuccess = (value) => ({
   type: GET_NEWSLIST_SUCCESS,
@@ -58,10 +49,7 @@ export const getNewsSourcesFailure = (value) => ({
   payload: JSON.stringify(value)
 })
 
-// export const isFilter = () => ({
-//   type: IS_FILTER,
 
-// });
 /* Initial state */
 const initialState = Map({
   newsList: '',
@@ -77,12 +65,7 @@ export default function newsReducer (state = initialState, action) {
     case GET_NEWS_SOURCES:
       return state
 
-    case GET_NEWSLIST_SOURCES:
-      return state
-
-    case GET_NEWSLIST_SOURCES_TOPHEADLINES:
-      return state
-
+    
     case GET_NEWSLIST_SUCCESS:
       return state.set('newsList', action.payload)
 

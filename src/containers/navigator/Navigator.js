@@ -3,7 +3,7 @@ import {
 } from 'react-navigation'
 
 import HomeViewContainer from '../screens/home/HomeViewContainer'
-import FilterViewContainer from '../screens/Filter/FilterViewContainer'
+import FilterViewContainer from '../screens/filter/FilterViewContainer'
 import {createNavigationContainer} from 'react-navigation'
 
 // MainStack is nested inside StackNavigator
