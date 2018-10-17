@@ -2,12 +2,9 @@ import { put, takeLatest, takeEvery } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import * as AppActions from '../redux/Services';
 import * as NewsActions from '../redux/NewsAuthAPI';
-import * as apiEndpoints from '../services/ApiConfig';
 import { getTopHeadlines, getSearchResults, getNewsSources } from '../services/News'
 
-const API_ROOT = apiEndpoints.api;
-const API_KEY = apiEndpoints.key;
-var requestUrl ='';
+
 
 function* getNewsListWatcher() {
   yield takeEvery(NewsActions.GET_NEWSLIST, getNewsListHandler);

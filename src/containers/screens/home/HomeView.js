@@ -21,6 +21,7 @@ import * as NewsAuthAPI from '../../../redux/NewsAuthAPI';
 
 const ITEMS_PER_PAGE = 10;
 const { HomeViewTitle } = AllTexts;
+const ACTION_BUTTON_COLOR = "rgba(231,76,60,1)";
 
 class HomeView extends Component {
   static propTypes = {
@@ -191,7 +192,7 @@ class HomeView extends Component {
           />
           
           <ActionButton
-            buttonColor="rgba(231,76,60,1)"
+            buttonColor={ACTION_BUTTON_COLOR}
             icon={<Icon name='filter' size={35}/>}
             onPress={this.props.loading?this._onLoading:this._onFilter}
           />

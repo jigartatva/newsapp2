@@ -89,6 +89,9 @@ const styles = StyleSheet.create({
   },
   image:{
     height:'100%' , width: '100%'
+  },
+  actionbutton:{
+    color : "rgba(231,76,60,1)"
   }
 });
 
