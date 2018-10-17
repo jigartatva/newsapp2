@@ -2,7 +2,15 @@ import React from 'react';
 import HomeView from '../../src/containers/screens/home/HomeView';
 import { Provider } from 'react-redux';
 import store from '../../src/redux/store';
+import { shallow, configure } from 'enzyme'
+import sinon from 'sinon';
+import { SafeAreaView } from 'react-native';
 
+
+// fix Enzyme to work with React 16 as per https://github.com/airbnb/enzyme#installation
+import Adapter from 'enzyme-adapter-react-16'
+
+configure({ adapter: new Adapter() })
 //const store = configureStore();
 
 import renderer from 'react-test-renderer';
@@ -11,7 +19,9 @@ describe('NEWS VIEW ', () => {
   jest.mock('WebView');
   const props = {
     navigation: {
-      setParams: jest.fn()
+      setParams: jest.fn(),
+      getParam:jest.fn(),
+      navigate: jest.fn()
     },
     newsList: '',
   };
@@ -138,40 +148,42 @@ describe('NEWS VIEW ', () => {
       "country": "us"
     }]
 
-  it('should render "NEWS VIEW"', () => {
-    const tree = renderer.create(
-      <Provider store={store}>
-        <HomeView dispatch={jest.fn} {...props} />
-      </Provider>).toJSON();
-    expect(tree).toMatchSnapshot();
+  it('calls seach as expected when enter the words to search', () => {
+    const wrapper = shallow(
+      <HomeView
+        {...props}
+        newsList={''}
+        dispatch={jest.fn}
+        store={store}
+      />      
+    );
+    console.log(wrapper);
+    const render = wrapper.dive();
+    render.setProps({ newsList: JSON.stringify(allNews) });
+    render.update();
+    render.find('Search').forEach(child => {
+      console.log('Child:',child.props());
+      child.props().onSearch();
+    });
+});
+
+it('Taps filter button to navigate to source List', () => {
+  const wrapper = shallow(
+    <HomeView
+        {...props}
+        newsList={''}
+        dispatch={jest.fn}
+        store={store}
+      />
+  );
+  console.log('Wrapper:',wrapper);
+  const render = wrapper.dive();
+  render.setProps({ newsList: allNews, newsSources: items });
+  render.update();
+  render.find('ActionButton').forEach(child => {
+    child.props().onPress();
   });
-
-  it('should render "NEWS VIEW" with news data', () => {
-
-    const tree = renderer.create(
-      <Provider store={store}>
-        <HomeView
-          {...props}
-          newsList={JSON.stringify(allNews)}
-          dispatch={jest.fn}
-        />
-      </Provider>).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  it('should render "NEWS VIEW" with sources data', () => {
-
-    const tree = renderer.create(
-      <Provider store={store}>
-        <HomeView
-          {...props}
-          newsList={JSON.stringify(allNews)}
-          newsSources={JSON.stringify(items)}
-          dispatch={jest.fn}
-        />
-      </Provider>).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
+});
 
 });
 
