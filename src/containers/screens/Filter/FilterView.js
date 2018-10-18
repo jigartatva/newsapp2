@@ -28,7 +28,7 @@ class FilterView extends Component {
     };
     this._onapplyFilter =this._onapplyFilter.bind(this);
     this._fetchSourcesList=this._fetchSourcesList.bind(this)
-    this._onClear=this._onClear.bind(this)
+   
   }
   
   componentWillMount() {
@@ -103,11 +103,7 @@ class FilterView extends Component {
    
         // this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy));
       }
- _onClear(){
-    // this._fetchSourcesList
-    // console.log("clear")
-    this.setState({selectedItems:[]})
- }
+
 
   render() {
   //  console.log("items==>",this.state.items) 
