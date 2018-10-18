@@ -163,7 +163,7 @@ class HomeView extends Component {
             renderItem={item => (
 
                   <View key={Math.random()} style={styles.articleListView}>
-                    <Image source={{ uri: item.urlToImage}} style={styles.image}>
+                    <Image source={{ uri: item.urlToImage && item.urlToImage ? item.urlToImage : '' }} style={styles.image}>
                       <View style={styles.cardview}>
                         <View style={styles.source}>
                           <Text>{item.hasOwnProperty('source')  ? item.source.name : 'not available'}</Text>
