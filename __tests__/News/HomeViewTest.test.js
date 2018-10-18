@@ -10,7 +10,7 @@ describe('HOME VIEW ', () => {
   jest.mock('WebView');
   const props = {
     navigation: {
-      setParam: jest.fn(),
+      setParams: jest.fn(),
       getParam:jest.fn(),
       navigate: jest.fn()
     },
@@ -630,8 +630,7 @@ it('Should do pull to refresh fetch most recent top head lines', () => {
   render.instance().setState({ currentPageIndex: 1 });
   render.update();
   render.setProps({ newsList: JSON.stringify(newHeadLines)});
-  render.update();
-  console.log('renders:',render.props().children[3].props.children[0].props.refreshControl.props);
+  render.update(); 
   render.props().children[3].props.children[0].props.refreshControl.props.onRefresh()
 });
 it('Should do pull to refresh to fetch most recent searched news', () => {

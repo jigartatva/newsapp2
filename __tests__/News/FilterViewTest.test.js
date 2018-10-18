@@ -11,7 +11,7 @@ describe('FILTER VIEW ', () => {
     jest.mock('WebView');
     const props = {
       navigation: {
-        setParam:jest.fn(),
+        setParams:jest.fn(),
         getParam: jest.fn(),
         navigate: jest.fn()
       },
@@ -80,7 +80,25 @@ describe('FILTER VIEW ', () => {
           "language": "en",
           "country": "us"
         }]
-     
+      it('should render "Filter View"', () => {
+          const wrapper = shallow(
+            <FilterView {...props} dispatch={jest.fn} store={store} />
+          );
+      });
+    
+    it('should render "Filter View" with Sources', () => {
+        const wrapper = shallow(
+          <FilterView
+            {...props}
+            newsSources={JSON.stringify(items)}
+            dispatch={jest.fn}
+            store={store}
+          />
+        );
+        const render = wrapper.dive();
+        render.setProps({ newsSources: JSON.stringify(items) });
+        render.update();
+    });
     it('should select sources', () => {
       const tree = shallow(
         <FilterView
@@ -91,7 +109,7 @@ describe('FILTER VIEW ', () => {
         />
       );
       const render = tree.dive();
-      render.setProps({ newsSources: items});
+      render.setProps({ newsSources: JSON.stringify(items)});
       render.update();
       render.find('SelectMultiple').forEach(child => {
         child.props().onSelectionsChange();
@@ -103,12 +121,15 @@ describe('FILTER VIEW ', () => {
     const tree = shallow(
       <FilterView
         {...props}
+        newsSources={''}
         store={store}
         dispatch={jest.fn}
       />
     );
     const render = tree.dive();
-      render.setState({ selectedItems: items });
+      render.setState({ selectedItems: JSON.stringify(items) });
+      render.update();
+      render.setProps({ newsSources: JSON.stringify(items)});
       render.update();
       render.find('TouchableOpacity').forEach(child => {
         child.props().onPress();
