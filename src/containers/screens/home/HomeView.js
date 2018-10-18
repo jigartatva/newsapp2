@@ -1,6 +1,6 @@
 /* eslint-enable */
 import React, { Component } from 'react';
-import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator,ToastAndroid} from 'react-native';
+import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator,ToastAndroid, StatusBar} from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -140,8 +140,8 @@ class HomeView extends Component {
 
   render() { 
     return (
-      
       <SafeAreaView style={[styles.container]}>
+      <StatusBar barStyle="dark-content"/>
         <View style={styles.activityIndicator}>
           <ActivityIndicator size="large" color={"#0000ff"} animating={this.props.loading} />
         </View>

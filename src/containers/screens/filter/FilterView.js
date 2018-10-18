@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text,TouchableOpacity,Alert } from "react-native";
+import { View, Text,TouchableOpacity,Alert, StatusBar, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import * as NewsAuthAPI from '../../../redux/NewsAuthAPI'
 import SelectMultiple from 'react-native-select-multiple'
@@ -87,7 +87,8 @@ class FilterView extends Component {
 
 render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content"/>
         <SelectMultiple
           items={this.state.items}
           selectedItems={this.state.selectedItems}
@@ -95,7 +96,7 @@ render() {
         <TouchableOpacity activeOpacity={.4} style={styles.TouchableOpacityStyle} onPress={this._onapplyFilter} >
            <Text style={styles.applyBtn}> Apply</Text>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 }
