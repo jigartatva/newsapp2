@@ -14,7 +14,6 @@ const BORDER_BACK = 'steelblue';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    color: Colors._FFFFFF,
     justifyContent: 'center',
     alignItems: 'center',
     width: CommonFunctions.screenWidth(100, 0),
