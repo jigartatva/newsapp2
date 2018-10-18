@@ -52,6 +52,11 @@ Filter Applied
 
 ![Alt text](/Screenshots/FiltersApplied-Android.png?raw=true "Top Headlines")
 
+## Code Coverage Report
+![Alt text](/Screenshots/CodeCoverage?raw=true "Top Headlines")
+
+Note: We havn't added News Details screen. 
+
 
 
 
