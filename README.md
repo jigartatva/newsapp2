@@ -28,7 +28,7 @@ Search
 
 Filter
 
-![Alt text](/Screenshots/Source Filter-iOS.png?raw=true "Top Headlines")
+![Alt text](/Screenshots/SourceFilter-iOS.png?raw=true "Top Headlines")
 
 Filter Applied
 
@@ -46,7 +46,7 @@ Search
 
 Filter
 
-![Alt text](/Screenshots/Source Filters-Android?raw=true "Top Headlines")
+![Alt text](/Screenshots/SourceFilters-Android?raw=true "Top Headlines")
 
 Filter Applied
 
