@@ -14,3 +14,8 @@ react-native run-ios
 For Android 
 react-native run-android
 ```
+## Screenshots iOS
+
+Top_headlines
+![Alt text](/Screenshots/TopHeadLines-iOS.png?raw=true "Top Headlines")
+
