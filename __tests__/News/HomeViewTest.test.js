@@ -10,7 +10,7 @@ describe('NEWS VIEW ', () => {
   jest.mock('WebView');
   const props = {
     navigation: {
-      setParams: jest.fn(),
+      setParam: jest.fn(),
       getParam:jest.fn(),
       navigate: jest.fn()
     },
@@ -152,7 +152,7 @@ describe('NEWS VIEW ', () => {
     render.setProps({ newsList: JSON.stringify(allNews) });
     render.update();
     render.find('Search').forEach(child => {
-      child.props().onSearch();
+      child.props().onSearch('abc-news, argaam');
     });
 });
 
@@ -173,6 +173,43 @@ it('Taps filter button to navigate to source List', () => {
   });
 });
 
+it('Taps filter button to apply filter on TopHeadlines', () => {
+  const wrapper = shallow(
+    <HomeView
+        {...props}
+        newsList={''}
+        dispatch={jest.fn}
+        store={store}
+      />
+  );
+  const render = wrapper.dive();
+  render.setProps({ newsList: allNews, newsSources: items });
+  render.update();
+  render.setState({ searchQuery: null });
+  render.update();
+  render.find('ActionButton').forEach(child => {
+    child.props().onPress();
+  });
+});
+
+it('Taps filter button to apply filter on Search Text', () => {
+  const wrapper = shallow(
+    <HomeView
+        {...props}
+        newsList={''}
+        dispatch={jest.fn}
+        store={store}
+      />
+  );
+  const render = wrapper.dive();
+  render.setProps({ newsList: allNews, newsSources: items });
+  render.update();
+  render.setState({ searchQuery: 'India' });
+  render.update();
+  render.find('ActionButton').forEach(child => {
+    child.props().onPress();
+  });
+});
 });
 
 
