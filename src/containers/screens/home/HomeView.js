@@ -1,6 +1,6 @@
 /* eslint-enable */
 import React, { Component } from 'react';
-import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator,ToastAndroid, StatusBar} from 'react-native';
+import { SafeAreaView, View, Text, ListView, RefreshControl, ActivityIndicator, ToastAndroid, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -39,20 +39,20 @@ class HomeView extends Component {
         rowHasChanged: this._rowHasChanged.bind(this),
       }),
       isLoadMore: false,
-      currentPageIndex:1,
+      currentPageIndex: 1,
       allNews: [],
-      searchQuery:'',
-      isSearch:false,
-      sourceBy:""
+      searchQuery: '',
+      isSearch: false,
+      sourceBy: ""
     };
     this.renderLoadMoreItems = this.renderLoadMoreItems.bind(this);
-    this._onFilter =this._onFilter.bind(this);
-    this._onLoading =this._onLoading.bind(this);
+    this._onFilter = this._onFilter.bind(this);
+    this._onLoading = this._onLoading.bind(this);
   }
 
   componentWillMount() {
-      this.setState({ allNews: [], searchQuery: '' });
-      this._loadMoreContentAsync();
+    this.setState({ allNews: [], searchQuery: '' });
+    this._loadMoreContentAsync();
   }
 
   componentDidMount() {
@@ -76,9 +76,8 @@ class HomeView extends Component {
         this.setState({ dataSource: this.getUpdatedDataSource(this.state.allNews), isLoadMore: false });
       }
     }
-    if(nextProps.navigation.getParam('sourceBy') !== this.state.sourceBy)
-    {
-      this.setState({sourceBy : nextProps.navigation.getParam('sourceBy')});
+    if (nextProps.navigation.getParam('sourceBy') !== this.state.sourceBy) {
+      this.setState({ sourceBy: nextProps.navigation.getParam('sourceBy') });
     }
   }
 
@@ -104,8 +103,8 @@ class HomeView extends Component {
 
   _loadMoreContentAsync = async () => {
     this.setState({ isLoadMore: true });
-    this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE,this.state.sourceBy))
-      : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex, ITEMS_PER_PAGE,this.state.sourceBy));
+    this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE, this.state.sourceBy))
+      : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex, ITEMS_PER_PAGE, this.state.sourceBy));
     this.setState({ isLoadMore: false });
   }
 
@@ -113,40 +112,40 @@ class HomeView extends Component {
     let newsProps = JSON.parse(this.props.newsList);
     let maxItems = newsProps.totalResults;
     if (maxItems >= this.state.currentPageIndex * ITEMS_PER_PAGE) {
-        this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex +1, ITEMS_PER_PAGE,this.state.sourceBy))
-        : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex + 1, ITEMS_PER_PAGE,this.state.sourceBy));
-        this.setState({ currentPageIndex: this.state.currentPageIndex + 1 });
+      this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex + 1, ITEMS_PER_PAGE, this.state.sourceBy))
+        : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex + 1, ITEMS_PER_PAGE, this.state.sourceBy));
+      this.setState({ currentPageIndex: this.state.currentPageIndex + 1 });
     }
   }
 
   _onSearch(text) {
     this.setState({ allNews: [], searchQuery: text });
-    this.props.dispatch(NewsAuthAPI.getNewsBySearch(text, this.state.currentPageIndex, ITEMS_PER_PAGE,this.state.sourceBy));
+    this.props.dispatch(NewsAuthAPI.getNewsBySearch(text, this.state.currentPageIndex, ITEMS_PER_PAGE, this.state.sourceBy));
   }
 
   _onCancel() {
-    this.setState({ allNews: [], searchQuery: '' ,currentPageIndex: 1});
+    this.setState({ allNews: [], searchQuery: '', currentPageIndex: 1 });
     this._loadMoreContentAsync();
   }
 
-  _onFilter(){
-    this.setState({currentPageIndex:1,})
-    this.props.navigation.navigate({routeName:"Filter",params:{search:this.state.searchQuery,sourceBy:this.state.sourceBy}})
+  _onFilter() {
+    this.setState({ currentPageIndex: 1, })
+    this.props.navigation.navigate({ routeName: "Filter", params: { search: this.state.searchQuery, sourceBy: this.state.sourceBy } })
   }
 
   _onLoading() {
-    ToastAndroid.show("please wait",ToastAndroid.SHORT);
+    ToastAndroid.show("please wait", ToastAndroid.SHORT);
   }
 
-  render() { 
+  render() {
     return (
       <SafeAreaView style={[styles.container]}>
-      <StatusBar barStyle="dark-content"/>
+        <StatusBar barStyle="dark-content" />
         <View style={styles.activityIndicator}>
           <ActivityIndicator size="large" color={"#0000ff"} animating={this.props.loading} />
         </View>
 
-        <View style={styles.searchBox}>          
+        <View style={styles.searchBox}>
           <View style={styles.subSearchBox}>
             <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
           </View>
@@ -157,31 +156,31 @@ class HomeView extends Component {
             itemDimension={150}
             // staticDimension={130}
             spacing={0}
-            onEndReached = {this.renderLoadMoreItems}
-            refreshControl={this._renderRefreshControl()}         
+            onEndReached={this.renderLoadMoreItems}
+            refreshControl={this._renderRefreshControl()}
             items={this.state.allNews}
             renderItem={item => (
 
-                  <View key={Math.random()} style={styles.articleListView}>
-                    <Image source={{ uri: item.urlToImage && item.urlToImage ? item.urlToImage : '' }} style={styles.image}>
-                      <View style={styles.cardview}>
-                        <View style={styles.source}>
-                          <Text>{item.hasOwnProperty('source')  ? item.source.name : 'not available'}</Text>
-                        </View>
-                        <View style={styles.shadowView}>
-                          <Text style={styles.listItemTitleText} numberOfLines={3} ellipsizeMode ={'tail'}>{item.title}</Text>
-                        </View>
-                        <Text style={styles.publish}>publish on: {item.publishedAt}</Text>                                                                                                                                                                                                                                                                                                                 
-                      </View>
-                    </Image>
+              <View key={Math.random()} style={styles.articleListView}>
+                <Image source={{ uri: item.urlToImage && item.urlToImage ? item.urlToImage : '' }} style={styles.image}>
+                  <View style={styles.cardview}>
+                    <View style={styles.source}>
+                      <Text>{item.hasOwnProperty('source') ? item.source.name : 'not available'}</Text>
+                    </View>
+                    <View style={styles.shadowView}>
+                      <Text style={styles.listItemTitleText} numberOfLines={3} ellipsizeMode={'tail'}>{item.title}</Text>
+                    </View>
+                    <Text style={styles.publish}>publish on: {item.publishedAt}</Text>
                   </View>
+                </Image>
+              </View>
             )}
           />
-          
+
           <ActionButton
             buttonColor={ACTION_BUTTON_COLOR}
-            icon={<Icon name='filter' size={35}/>}
-            onPress={this.props.loading?this._onLoading:this._onFilter}
+            icon={<Icon name='filter' size={35} />}
+            onPress={this.props.loading ? this._onLoading : this._onFilter}
           />
         </View>
       </SafeAreaView>
