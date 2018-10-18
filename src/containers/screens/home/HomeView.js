@@ -42,7 +42,6 @@ class HomeView extends Component {
       currentPageIndex:1,
       allNews: [],
       searchQuery:'',
-      isFilter:false,
       isSearch:false,
       sourceBy:""
     };
@@ -104,7 +103,6 @@ class HomeView extends Component {
   }
 
   _loadMoreContentAsync = async () => {
-    // console.log("sourceBy loadmoreconternt ==>",sourceBy)
     this.setState({ isLoadMore: true });
     this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex, ITEMS_PER_PAGE,this.state.sourceBy))
       : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex, ITEMS_PER_PAGE,this.state.sourceBy));
@@ -115,15 +113,9 @@ class HomeView extends Component {
     let newsProps = JSON.parse(this.props.newsList);
     let maxItems = newsProps.totalResults;
     if (maxItems >= this.state.currentPageIndex * ITEMS_PER_PAGE) {
-      // if(isFilter){
-      //   this.props.dispatch(NewsAuthAPI.getNewsListBySources(sourceBy,this.state.currentPageIndex,ITEMS_PER_PAGE));
-      //   this.setState({ currentPageIndex: this.state.currentPageIndex + 1 });
-      // }else{
         this.state.searchQuery ? this.props.dispatch(NewsAuthAPI.getNewsBySearch(this.state.searchQuery, this.state.currentPageIndex +1, ITEMS_PER_PAGE,this.state.sourceBy))
         : this.props.dispatch(NewsAuthAPI.getNewsList(this.state.currentPageIndex + 1, ITEMS_PER_PAGE,this.state.sourceBy));
         this.setState({ currentPageIndex: this.state.currentPageIndex + 1 });
-      // }
-      
     }
   }
 
@@ -150,21 +142,17 @@ class HomeView extends Component {
     return (
       
       <SafeAreaView style={[styles.container]}>
-        
-      
         <View style={styles.activityIndicator}>
           <ActivityIndicator size="large" color={"#0000ff"} animating={this.props.loading} />
         </View>
 
         <View style={styles.searchBox}>          
-
           <View style={styles.subSearchBox}>
             <Search ref="search_box" onSearch={(text) => this._onSearch(text)} onCancel={() => this._onCancel()} />
           </View>
         </View>
 
         <View style={styles.gridview}>
-          
           <GridView
             itemDimension={150}
             // staticDimension={130}
@@ -187,7 +175,6 @@ class HomeView extends Component {
                       </View>
                     </Image>
                   </View>
-                
             )}
           />
           
@@ -196,8 +183,6 @@ class HomeView extends Component {
             icon={<Icon name='filter' size={35}/>}
             onPress={this.props.loading?this._onLoading:this._onFilter}
           />
-          
-          
         </View>
       </SafeAreaView>
     );

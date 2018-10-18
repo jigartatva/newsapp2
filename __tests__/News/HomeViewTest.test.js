@@ -1,19 +1,10 @@
 import React from 'react';
 import HomeView from '../../src/containers/screens/home/HomeView';
-import { Provider } from 'react-redux';
 import store from '../../src/redux/store';
 import { shallow, configure } from 'enzyme'
-import sinon from 'sinon';
-import { SafeAreaView } from 'react-native';
-
-
-// fix Enzyme to work with React 16 as per https://github.com/airbnb/enzyme#installation
 import Adapter from 'enzyme-adapter-react-16'
 
 configure({ adapter: new Adapter() })
-//const store = configureStore();
-
-import renderer from 'react-test-renderer';
 
 describe('NEWS VIEW ', () => {
   jest.mock('WebView');
@@ -157,12 +148,10 @@ describe('NEWS VIEW ', () => {
         store={store}
       />      
     );
-    console.log(wrapper);
     const render = wrapper.dive();
     render.setProps({ newsList: JSON.stringify(allNews) });
     render.update();
     render.find('Search').forEach(child => {
-      console.log('Child:',child.props());
       child.props().onSearch();
     });
 });
@@ -176,7 +165,6 @@ it('Taps filter button to navigate to source List', () => {
         store={store}
       />
   );
-  console.log('Wrapper:',wrapper);
   const render = wrapper.dive();
   render.setProps({ newsList: allNews, newsSources: items });
   render.update();

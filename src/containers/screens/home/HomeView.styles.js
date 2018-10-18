@@ -8,13 +8,9 @@ const WHITE_COLOR = 'white';
 const SOURCE = "#ff0040";
 const SHADOW = 'rgba(0, 0, 0, 0.75)';
 const PUBLISH = 'rgba(0, 0, 0, 0.90)';
-
-
-
-
-
 const BORDER = 'black';
 const BORDER_BACK = 'steelblue';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

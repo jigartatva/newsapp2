@@ -4,8 +4,6 @@ import * as AppActions from '../redux/Services';
 import * as NewsActions from '../redux/NewsAuthAPI';
 import { getTopHeadlines, getSearchResults, getNewsSources } from '../services/News'
 
-
-
 function* getNewsListWatcher() {
   yield takeEvery(NewsActions.GET_NEWSLIST, getNewsListHandler);
 }
@@ -13,7 +11,6 @@ function* getNewsListWatcher() {
 function* getNewsListBySearchWatcher() {
   yield takeLatest(NewsActions.GET_NEWSLIST_SEARCH, getNewsListBySearchHandler);
 }
-
 
 function* getNewsSourcesWatcher() {
   yield takeEvery(NewsActions.GET_NEWS_SOURCES, getNewsSourcesHandler);
@@ -25,7 +22,6 @@ function* getNewsListHandler(value) {
   var searchParams = value.payload;
   try {
     let result = yield getTopHeadlines(searchParams);
-    console.log("result ==>", result)
     if (result.status === "ok") {
       yield put(NewsActions.getNewsListSuccess(result));
     } else {
@@ -41,16 +37,13 @@ function* getNewsListHandler(value) {
 function* getNewsListBySearchHandler(value) {
   yield put(AppActions.setLoader(true));
   try {
-    
     let result = yield getSearchResults(value);
-    // console.log('result', result);
     if (result.status === "ok") {
       yield put(NewsActions.getNewsListSuccess(result));
     } else {
       Alert.alert(result.code, result.message);
       yield put(NewsActions.getNewsListFail(""));
     }
-
   } catch (error) {
     yield put(NewsActions.getNewsListFail(""));
   }
@@ -60,25 +53,20 @@ function* getNewsListBySearchHandler(value) {
 function* getNewsSourcesHandler() {
   yield put(AppActions.setLoader(true));
   try {
-    
-      let result = yield getNewsSources();
+     let result = yield getNewsSources();
     if (result.status === "ok") {
       yield put(NewsActions.getNewsSourcesSuccess(result.sources));
     } else {
       yield put(NewsActions.getNewsSourcesFailure(""));
     }
-
-  } catch (error) {
+ } catch (error) {
     yield put(NewsActions.getNewsSourcesFailure(""));
   }
   yield put(AppActions.setLoader(false));
 }
 
-
-
 export default [
   getNewsListWatcher,
   getNewsListBySearchWatcher,
   getNewsSourcesWatcher,
- 
 ];

@@ -4,9 +4,6 @@ import { configure } from 'enzyme';
 import { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import store from '../../src/redux/store';
-import sinon from 'sinon';
-
-import renderer from 'react-test-renderer';
 
 configure({ adapter: new Adapter() });
 
@@ -84,47 +81,19 @@ describe('FILTER VIEW ', () => {
           "country": "us"
         }]
      
-  //   it('should select sources', () => {
-  //       const tree = shallow(
-  //         // <Provider store={store}>
-  //         <FilterView
-  //           {...props}
-  //           store={store}
-  //           dispatch={jest.fn}
-            
-  //         />
-  //         // </Provider> 
-  //       );
-  //       const renderer = tree.dive();
-  //       renderer.setProps({ newsSources: items});
-  //       renderer.update();
-  //       console.log(renderer.props().children[0].props.onSelectionsChange());
-  //       renderer.props().children[0].props.onSelectionsChange();
-  //       renderer.setState({ selectedItems: items });
-  //       renderer.update();
-  //       console.log(renderer.props().children[1].props.onPress());
-  //       renderer.props().children[1].props.onPress();
-      
-        
-  //   });
     it('should select sources', () => {
       const tree = shallow(
-        // <Provider store={store}>
         <FilterView
           {...props}
           newsSources={''}
           store={store}
           dispatch={jest.fn}
-          
         />
-        // </Provider> 
       );
-      
       const render = tree.dive();
       render.setProps({ newsSources: items});
       render.update();
       render.find('SelectMultiple').forEach(child => {
-        console.log('Child:',child.props());
         child.props().onSelectionsChange();
       });
      
@@ -132,23 +101,17 @@ describe('FILTER VIEW ', () => {
   });
   it('should apply filter', () => {
     const tree = shallow(
-      // <Provider store={store}>
       <FilterView
         {...props}
         store={store}
         dispatch={jest.fn}
-        
       />
-      // </Provider> 
     );
     const render = tree.dive();
       render.setState({ selectedItems: items });
       render.update();
       render.find('TouchableOpacity').forEach(child => {
-        console.log('Child:',child.props());
         child.props().onPress();
       });
-    
-});
-
+  });
 });

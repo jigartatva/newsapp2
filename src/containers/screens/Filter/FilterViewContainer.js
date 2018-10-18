@@ -5,11 +5,8 @@ import { NavigationActions } from 'react-navigation';
 
 export default connect(
     state => ({
-      
       loading: state.getIn(['appReducer', 'loading']),
       newsSources: state.getIn(['newsReducer', 'newsSources']),
-      newsList: state.getIn(['newsReducer', 'newsList']),
-      
     }),
     dispatch => {
       return {
