@@ -5,6 +5,7 @@ import { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import store from '../../src/redux/store';
 
+
 configure({ adapter: new Adapter() });
 
 describe('FILTER VIEW ', () => {
@@ -80,11 +81,13 @@ describe('FILTER VIEW ', () => {
       "language": "en",
       "country": "us"
     }]
+ 
 
   it('should render "Filter View"', () => {
     const wrapper = shallow(
       <FilterView {...props} dispatch={jest.fn} store={store} />
     );
+ expect(wrapper.containsMatchingElement(<legend>FilterView</legend>));
   });
 
   it('should render "Filter View" with Sources', () => {
@@ -99,7 +102,11 @@ describe('FILTER VIEW ', () => {
     const render = wrapper.dive();
     render.setProps({ newsSources: JSON.stringify(items) });
     render.update();
+    // console.log("render: ", render.props().children[1].props.items.length);
+    expect(render.props().children[1].props.items.length).toEqual(7);
   });
+
+
 
   it('should select sources', () => {
     const tree = shallow(
@@ -113,9 +120,13 @@ describe('FILTER VIEW ', () => {
     const render = tree.dive();
     render.setProps({ newsSources: JSON.stringify(items) });
     render.update();
+    render.setState({ selectedItems: JSON.stringify(items) });
+    render.update();
     render.find('SelectMultiple').forEach(child => {
       child.props().onSelectionsChange();
     });
+ console.log("render:",render.props().children[1].props.onSelectionsChange);
+ expect( render.props().children[1].props.onSelectionsChange()).toBeUndefined();
   });
 
   it('should apply filter', () => {
@@ -135,5 +146,9 @@ describe('FILTER VIEW ', () => {
     render.find('TouchableOpacity').forEach(child => {
       child.props().onPress();
     });
+    
+     expect( render.props().children[2].props.onPress()).toBeUndefined();
   });
+
+ 
 });
