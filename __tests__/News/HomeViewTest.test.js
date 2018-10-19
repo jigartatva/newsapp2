@@ -1,8 +1,10 @@
 import React from 'react';
 import HomeView from '../../src/containers/screens/home/HomeView';
 import store from '../../src/redux/store';
-import { shallow, configure } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import sinon from 'sinon';
+import { NativeModules } from 'react-native';
 
 configure({ adapter: new Adapter() })
 
@@ -446,6 +448,8 @@ describe('HOME VIEW ', () => {
 		const wrapper = shallow(
 			<HomeView {...props} dispatch={jest.fn} store={store} />
 		);
+
+		expect(wrapper.containsMatchingElement(<legend>HomeView</legend>));
 	});
 
 	it('should render "Home View" with top headlines', () => {
@@ -460,8 +464,10 @@ describe('HOME VIEW ', () => {
 		const render = wrapper.dive();
 		render.setProps({ newsList: JSON.stringify(allNews) });
 		render.update();
+		expect(render.props().children[3].props.children[0].props.items.length).toEqual(12)
 	});
-	it('Should call seach when enter the words to search', () => {
+
+	it('Should call search when enter the words to search', () => {
 		const wrapper = shallow(
 			<HomeView
 				{...props}
@@ -478,6 +484,7 @@ describe('HOME VIEW ', () => {
 		render.find('Search').forEach(child => {
 			child.props().onSearch('India');
 		});
+
 	});
 
 	it('Should call cancel when user presses cancel from Search', () => {
@@ -492,9 +499,12 @@ describe('HOME VIEW ', () => {
 		const render = wrapper.dive();
 		render.setProps({ newsList: JSON.stringify(allNews) });
 		render.update();
+
 		render.find('Search').forEach(child => {
 			child.props().onCancel();
 		});
+		console.log("render:", render.props().children[1].props.children[1]);
+		// expect(render.props().children[2].props.children[0].props.children[0].props.onCancel()).toBeUndefined();
 	});
 
 	it('Taps filter button to navigate to source List', () => {
@@ -510,9 +520,10 @@ describe('HOME VIEW ', () => {
 		render.setProps({ newsList: JSON.stringify(allNews) });
 		render.update();
 		render.find('ActionButton').forEach(child => {
-
 			child.props().onPress();
 		});
+		expect(render.props().children[3].props.children[1].props.onPress()).toBeUndefined();
+
 	});
 
 	it('Taps filter button to apply filter on TopHeadlines', () => {
@@ -532,6 +543,9 @@ describe('HOME VIEW ', () => {
 		render.find('ActionButton').forEach(child => {
 			child.props().onPress();
 		});
+
+		expect(render.props().children[3].props.children[1].props.onPress()).toBeUndefined();
+
 	});
 
 	it('Should not able to Tap filter button if more content is loading.', () => {
@@ -567,6 +581,8 @@ describe('HOME VIEW ', () => {
 		render.find('ActionButton').forEach(child => {
 			child.props().onPress();
 		});
+
+		expect(render.props().children[3].props.children[1].props.onPress()).toBeUndefined();
 	});
 
 	it('Should do load more on list end', () => {
@@ -579,9 +595,12 @@ describe('HOME VIEW ', () => {
 			/>
 		);
 		const render = wrapper.dive();
-		render.setProps({ newsList: JSON.stringify(allNews) });
+		render.setProps({ newsList: JSON.stringify(newHeadLines) });
 		render.update();
 		render.props().children[3].props.children[0].props.onEndReached();
+
+		expect(render.props().children[3].props.children[0].props.items.length).toEqual(20);
+
 	});
 
 	it('Should do load more on list end and should append the new data in the list when search text is blank', () => {
@@ -599,13 +618,15 @@ describe('HOME VIEW ', () => {
 		render.setProps({ newsList: JSON.stringify(newHeadLines) });
 		render.update();
 		render.props().children[3].props.children[0].props.onEndReached();
+
+		expect(render.props().children[3].props.children[0].props.items.length).toEqual(32);
 	});
 
 	it('Should do load more on list end and should append the new data in the list when search text is entered', () => {
 		const wrapper = shallow(
 			<HomeView
 				{...props}
-				newsList={JSON.stringify(allNews)}
+				newsList={JSON.stringify(newHeadLines)}
 				dispatch={jest.fn}
 				store={store}
 			/>
@@ -613,9 +634,10 @@ describe('HOME VIEW ', () => {
 		const render = wrapper.dive();
 		render.instance().setState({ currentPageIndex: 2, searchQuery: 'India' });
 		render.update();
-		render.setProps({ newsList: JSON.stringify(newHeadLines) });
+		render.setProps({ newsList: JSON.stringify(allNews) });
 		render.update();
 		render.props().children[3].props.children[0].props.onEndReached();
+		expect(render.props().children[3].props.children[0].props.items.length).toEqual(32);
 	});
 
 	it('Should do pull to refresh fetch most recent top head lines', () => {
@@ -633,6 +655,7 @@ describe('HOME VIEW ', () => {
 		render.setProps({ newsList: JSON.stringify(newHeadLines) });
 		render.update();
 		render.props().children[3].props.children[0].props.refreshControl.props.onRefresh()
+		expect(render.props().children[3].props.children[0].props.items.length).toEqual(20);
 	});
 
 	it('Should do pull to refresh to fetch most recent searched news', () => {
@@ -647,9 +670,10 @@ describe('HOME VIEW ', () => {
 		const render = wrapper.dive();
 		render.instance().setState({ currentPageIndex: 1, searchQuery: 'India' });
 		render.update();
-		render.setProps({ newsList: JSON.stringify(newHeadLines) });
+		render.setProps({ newsList: JSON.stringify(allNews) });
 		render.update();
 		render.props().children[3].props.children[0].props.refreshControl.props.onRefresh()
+		expect(render.props().children[3].props.children[0].props.items.length).toEqual(12);
 	});
 });
 
