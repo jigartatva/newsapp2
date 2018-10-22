@@ -102,7 +102,6 @@ describe('FILTER VIEW ', () => {
     const render = wrapper.dive();
     render.setProps({ newsSources: JSON.stringify(items) });
     render.update();
-    // console.log("render: ", render.props().children[1].props.items.length);
     expect(render.props().children[1].props.items.length).toEqual(7);
   });
 
@@ -125,7 +124,6 @@ describe('FILTER VIEW ', () => {
     render.find('SelectMultiple').forEach(child => {
       child.props().onSelectionsChange();
     });
-    console.log("render:", render.props().children[1].props.onSelectionsChange);
     expect(render.props().children[1].props.onSelectionsChange()).toBeUndefined();
   });
 
