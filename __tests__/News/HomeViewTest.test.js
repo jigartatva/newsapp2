@@ -562,7 +562,8 @@ describe('HOME VIEW ', () => {
 		render.find('ActionButton').forEach(child => {
 			child.props().onPress();
 		});
-		expect(render.props().loading).toBe(true);
+
+		expect(render.props().children[1].props.children.props.animating).toBe(true);
 	});
 
 	it('Taps filter button to apply filter on SearchText', () => {
