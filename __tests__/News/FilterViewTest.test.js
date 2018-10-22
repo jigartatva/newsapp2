@@ -81,13 +81,13 @@ describe('FILTER VIEW ', () => {
       "language": "en",
       "country": "us"
     }]
- 
+
 
   it('should render "Filter View"', () => {
     const wrapper = shallow(
       <FilterView {...props} dispatch={jest.fn} store={store} />
     );
- expect(wrapper.containsMatchingElement(<legend>FilterView</legend>));
+    expect(wrapper.containsMatchingElement(<legend>FilterView</legend>));
   });
 
   it('should render "Filter View" with Sources', () => {
@@ -125,8 +125,8 @@ describe('FILTER VIEW ', () => {
     render.find('SelectMultiple').forEach(child => {
       child.props().onSelectionsChange();
     });
- console.log("render:",render.props().children[1].props.onSelectionsChange);
- expect( render.props().children[1].props.onSelectionsChange()).toBeUndefined();
+    console.log("render:", render.props().children[1].props.onSelectionsChange);
+    expect(render.props().children[1].props.onSelectionsChange()).toBeUndefined();
   });
 
   it('should apply filter', () => {
@@ -146,9 +146,9 @@ describe('FILTER VIEW ', () => {
     render.find('TouchableOpacity').forEach(child => {
       child.props().onPress();
     });
-    
-     expect( render.props().children[2].props.onPress()).toBeUndefined();
+
+    expect(render.props().children[2].props.onPress()).toBeUndefined();
   });
 
- 
+
 });

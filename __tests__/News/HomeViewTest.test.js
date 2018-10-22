@@ -484,7 +484,7 @@ describe('HOME VIEW ', () => {
 		render.find('Search').forEach(child => {
 			child.props().onSearch('India');
 		});
-
+		expect(render.props().children[2].props.children.props.children.props.onSearch("India")).toBeUndefined();
 	});
 
 	it('Should call cancel when user presses cancel from Search', () => {
@@ -503,8 +503,8 @@ describe('HOME VIEW ', () => {
 		render.find('Search').forEach(child => {
 			child.props().onCancel();
 		});
-		console.log("render:", render.props().children[1].props.children[1]);
-		// expect(render.props().children[2].props.children[0].props.children[0].props.onCancel()).toBeUndefined();
+		// console.log("render:", render.props().children[2].props.children.props.children.props);
+		expect(render.props().children[2].props.children.props.children.props.onCancel()).toBeUndefined();
 	});
 
 	it('Taps filter button to navigate to source List', () => {
@@ -563,6 +563,8 @@ describe('HOME VIEW ', () => {
 		render.find('ActionButton').forEach(child => {
 			child.props().onPress();
 		});
+		console.log("loading checker ", render.props());
+		expect(render.props().loading).toBe(true);
 	});
 
 	it('Taps filter button to apply filter on SearchText', () => {
