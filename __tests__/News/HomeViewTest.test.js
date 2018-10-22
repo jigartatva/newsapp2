@@ -503,7 +503,6 @@ describe('HOME VIEW ', () => {
 		render.find('Search').forEach(child => {
 			child.props().onCancel();
 		});
-		// console.log("render:", render.props().children[2].props.children.props.children.props);
 		expect(render.props().children[2].props.children.props.children.props.onCancel()).toBeUndefined();
 	});
 
@@ -563,7 +562,6 @@ describe('HOME VIEW ', () => {
 		render.find('ActionButton').forEach(child => {
 			child.props().onPress();
 		});
-		console.log("loading checker ", render.props());
 		expect(render.props().loading).toBe(true);
 	});
 
